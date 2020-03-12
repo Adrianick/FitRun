@@ -7,6 +7,8 @@ public class PlayerMotor : MonoBehaviour
     private float verticalVelocity = 0.0f;
     private float playerRunningSpeed = 3.0f;
     private float gravity = 13.0f;
+    private float animationDuration = 2.3f;
+
 
     private Vector3 movePlayer;
 
@@ -18,8 +20,6 @@ public class PlayerMotor : MonoBehaviour
 
     void Update()
     {
-        movePlayer = Vector3.zero;
-
         if (controller.isGrounded)
         {
             verticalVelocity = -0.5f;
@@ -28,6 +28,14 @@ public class PlayerMotor : MonoBehaviour
         {
             verticalVelocity -= gravity * Time.deltaTime;
         }
+
+        if (Time.time < animationDuration)
+        {
+            controller.Move(Vector3.up * verticalVelocity);
+            controller.Move(Vector3.forward * playerRunningSpeed * Time.deltaTime);
+            return;
+        }
+        movePlayer = Vector3.zero;
 
         movePlayer.x = Input.GetAxis("Horizontal") * playerRunningSpeed;
         movePlayer.y = verticalVelocity;
