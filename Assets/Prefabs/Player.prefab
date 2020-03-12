@@ -172,6 +172,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -272,7 +273,7 @@ GameObject:
   - component: {fileID: 7855751203999442252}
   - component: {fileID: 7855751204006857414}
   - component: {fileID: 7855751204531944127}
-  - component: {fileID: 7855751204531944112}
+  - component: {fileID: 1312415389483909054}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -333,7 +334,7 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &7855751204531944112
+--- !u!114 &1312415389483909054
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -342,7 +343,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7855751203999479980}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 104168a6ad9a59d499f0aa15f73c7444, type: 3}
+  m_Script: {fileID: 11500000, guid: 2fee7a80c1cd7a6459003f86efb630a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7855751203999479982
