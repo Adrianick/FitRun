@@ -9,7 +9,7 @@ public class ItemRotate : MonoBehaviour
 
     void Start()
     {
-        burgerTransform = GameObject.FindGameObjectWithTag("Item").transform;
+        //burgerTransform = GameObject.FindGameObjectWithTag("Item").transform;
     }
 
     // Update is called once per frame
