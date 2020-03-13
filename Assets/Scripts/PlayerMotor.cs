@@ -6,7 +6,7 @@ public class PlayerMotor : MonoBehaviour
     private Animator animator;
 
     private float verticalVelocity = 0.0f;
-    private float playerRunningSpeed = 9.0f;
+    private float playerRunningSpeed = 7.0f;
     private float gravity = 13.0f;
     private float animationDuration = 2.3f;
 
@@ -29,7 +29,7 @@ public class PlayerMotor : MonoBehaviour
 
         }
 
-        if (this.animator.GetCurrentAnimatorStateInfo(0).nameHash
+        if (this.animator.GetCurrentAnimatorStateInfo(0).fullPathHash
             == Animator.StringToHash("Base Layer.Running"))
         {
             if (Input.GetKeyDown("s"))
@@ -42,8 +42,22 @@ public class PlayerMotor : MonoBehaviour
                 movePlayer.z = 0;
                 controller.center = movePlayer;
             }
-        }
+            if (Input.GetKeyDown("space"))
+            {
+                gravity = 0f;
+                animator.SetBool("Jump", true);
 
+
+                movePlayer.x = 0;
+                movePlayer.y = 7f;
+                movePlayer.z = 0;
+
+
+
+                //transform.position = movePlayer;
+                //controller.center = movePlayer;
+            }
+        }
 
         if (controller.isGrounded)
         {
@@ -79,5 +93,12 @@ public class PlayerMotor : MonoBehaviour
         movePlayer.y = 1.3f;
         movePlayer.z = 0;
         controller.center = movePlayer;
+    }
+    void JumpEnded()
+    {
+        animator.speed = 1;
+        animator.SetBool("Jump", false);
+        gravity = 13f;
+        //controller.Move(Vector3.up * -3);
     }
 }
