@@ -7,18 +7,19 @@ public class PlayerMotor : MonoBehaviour
 
     private Vector3 movePlayer;
 
-    private readonly float startingAnimationDuration = 1.5f;
+    private readonly float startingAnimationDuration = 0.5f;
 
     private float verticalVelocity = 0.0f;
-    private float playerRunningSpeed = 7.0f;
-    private float jumpForceMultiplier = 6.0f;
-    private float gravity = 22.0f;
-    private float rollingAnimationDuration = 0.3f;
+    private float playerRunningSpeed = 13.0f;
+    private float jumpForceMultiplier = 6.5f;
+    private float gravity = 24.0f;
+    private float rollingAnimationDuration = 0.1f;
     private float startedRollingTime;
 
     private bool isJumping = false;
     private bool isRolling = false;
     private bool wantsToRoll = false;
+    private bool wantsToJump = false;
 
     void Start()
     {
@@ -30,7 +31,7 @@ public class PlayerMotor : MonoBehaviour
     {
         if (Time.time - startedRollingTime > (rollingAnimationDuration * animator.speed) && isRolling)
         {
-            SetDefaultControllerCenter();
+            //SetDefaultControllerCenter();
             isRolling = false;
         }
         if (Time.time < startingAnimationDuration)
@@ -42,45 +43,37 @@ public class PlayerMotor : MonoBehaviour
 
         if (this.animator.GetCurrentAnimatorStateInfo(0).fullPathHash == Animator.StringToHash("Base Layer.Running"))
         {
-            if (Input.GetKeyDown("space"))
+            if (wantsToJump)
             {
-                animator.SetBool("Jump", true);
-                isJumping = true;
+                PlayJump();
+                wantsToJump = false;
             }
+        }
+
+        if (Input.GetKeyDown("space") && !isRolling)
+        {
+            wantsToJump = true;
+            wantsToRoll = false;
         }
 
         if (Input.GetKeyDown("s"))
         {
             wantsToRoll = true;
+            wantsToJump = false;
         }
 
-        //if (this.animator.GetCurrentAnimatorStateInfo(0).fullPathHash == Animator.StringToHash("Base Layer.Jump"))
-        //{
-        //    movePlayer = Vector3.zero;
-        //    movePlayer.x = Input.GetAxis("Horizontal") * playerRunningSpeed;
-        //    movePlayer.y = jumpForceMultiplier;
-        //    movePlayer.z = playerRunningSpeed;
-        //    controller.Move(movePlayer * Time.deltaTime);
-        //    return;
-        //}
 
         if (isJumping == true)
         {
-            verticalVelocity = 0;
-
-            //controller.center = new Vector3(controller.center.x, 3f, controller.center.z);
-
-            movePlayer = Vector3.zero;
-            movePlayer.x = Input.GetAxis("Horizontal") * playerRunningSpeed;
-            movePlayer.y = jumpForceMultiplier;
-            movePlayer.z = playerRunningSpeed;
-            controller.Move(movePlayer * Time.deltaTime);
+            verticalVelocity = jumpForceMultiplier;
         }
         else if (controller.isGrounded)
         {
             if (wantsToRoll)
             {
                 PlayRoll();
+                wantsToRoll = false;
+
             }
             verticalVelocity = -0.5f;
             animator.SetBool("Landing", false);
@@ -107,25 +100,30 @@ public class PlayerMotor : MonoBehaviour
         animator.speed = 0.8f;
         animator.SetBool("Roll", true);
 
-        SetRollingControllerCenter();
+        //SetRollingControllerCenter();
     }
     void RollEnded()
     {
-        animator.speed = 1;
         animator.SetBool("Roll", false);
-        wantsToRoll = false;
 
         //SetDefaultControllerCenter();
+        animator.speed = 1;
+    }
 
+    void PlayJump()
+    {
+        animator.SetBool("Jump", true);
+        isJumping = true;
+        animator.speed = 1.5f;
     }
     void JumpEnded()
     {
-        //animator.speed = 1;
+
         //animator.SetBool("Jump", false);
         animator.SetBool("Landing", true);
         isJumping = false;
         controller.center = new Vector3(controller.center.x, 1.3f, controller.center.z);
-
+        animator.speed = 1;
 
     }
     void SetRollingControllerCenter()
