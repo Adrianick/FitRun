@@ -20,7 +20,7 @@ public class CameraMotor : MonoBehaviour
     {
         moveVector = lookAt.position + startOffset;
         moveVector.x = 0;
-        moveVector.y = Mathf.Clamp(moveVector.y, 3, 11);
+        //moveVector.y = Mathf.Clamp(moveVector.y, 3, 11);
 
 
         if (transition > 1.0f)
