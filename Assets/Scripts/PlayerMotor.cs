@@ -11,13 +11,10 @@ public class PlayerMotor : MonoBehaviour
     private readonly float startingAnimationDuration = 0.5f;
 
     private float verticalVelocity = 0.0f;
-<<<<<<< HEAD
-    private float playerRunningSpeed = 2.0f;
-    private float jumpForceMultiplier = 4.0f;
-=======
+
     private float playerRunningSpeed = 13.0f;
     private float jumpForceMultiplier = 5.0f;
->>>>>>> 308b241e0543c8b2336ba1cf41398b08458be5a8
+
     private float gravity = 24.0f;
     private float rollingAnimationDuration = 0.3f;
     private float jumpingDuration = 0.4f;
