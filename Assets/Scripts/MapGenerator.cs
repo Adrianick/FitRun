@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
@@ -12,8 +11,10 @@ public class MapGenerator : MonoBehaviour
     private float safeZone = 10.0f;
     private int amountOfTilesOnScreen = 50;
     private int lastPrefabIndex = 0;
+    private float spawnInterval = 5f;
+    private float spawnTimer;
 
-    private List<GameObject> activeTiles = new List<GameObject>();   
+    private List<GameObject> activeTiles = new List<GameObject>();
 
     // Start is called before the first frame update
     private void Start()
@@ -35,13 +36,19 @@ public class MapGenerator : MonoBehaviour
     }
 
     // Update is called once per frame
+
+    private void FixedUpdate()
+    {
+
+    }
     private void Update()
     {
-        if (playerTransform.position.z - safeZone > (spawnZ - amountOfTilesOnScreen * tileLength))
-        {
-            SpawnTile();
-            DeleteTile();
-        }   
+        //if (playerTransform.position.z - safeZone > (spawnZ - amountOfTilesOnScreen * tileLength))// && Time.time - spawnTimer > spawnInterval)
+        //{
+        //    SpawnTile();
+        //    DeleteTile();
+        //    //spawnTimer = Time.time;
+        //}
     }
 
     private void SpawnTile(int prefabIndex = -1)
