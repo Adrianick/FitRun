@@ -6,17 +6,15 @@ public class PlayerMotor : MonoBehaviour
     private Animator animator;
 
     private Vector3 movePlayer;
-    private Vector3 beforeSideMovePosition;
 
     private readonly float startingAnimationDuration = 0.5f;
 
     private float verticalVelocity = 0.0f;
-    private float playerRunningSpeed = 13.0f;
-    private float jumpForceMultiplier = 5.0f;
+    private float playerRunningSpeed = 5.0f;
+    private float jumpForceMultiplier = 4.0f;
     private float gravity = 24.0f;
     private float rollingAnimationDuration = 0.3f;
     private float jumpingDuration = 0.4f;
-    private float moveRightLeftTransitionSpeed = 2f;
     private float moveRightLeftDistance = 2f;
     private float startedRollingTime;
     private float startedJumpingTime;
@@ -30,7 +28,6 @@ public class PlayerMotor : MonoBehaviour
 
     private int currentLane = 1;
 
-
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -40,7 +37,6 @@ public class PlayerMotor : MonoBehaviour
     void FixedUpdate()
     {
         //movePlayer = Vector3.zero;
-
         //if (wantsToGoRight)
         //{
         //    GoRight();
@@ -49,14 +45,15 @@ public class PlayerMotor : MonoBehaviour
         //{
         //    GoLeft();
         //}
-
-        //controller.Move(Vector3.Lerp(beforeSideMovePosition, movePlayer * Time.fixedDeltaTime, 1f));
+        //movePlayer.y = verticalVelocity;
+        //movePlayer.z = playerRunningSpeed;
+        //controller.Move(movePlayer * Time.fixedDeltaTime);
     }
     void Update()
     {
         if (Time.time - startedRollingTime > rollingAnimationDuration && isRolling)
         {
-            SetDefaultControllerCenter();
+            //SetDefaultControllerCenter();
             RollEnded();
             isRolling = false;
         }
@@ -141,35 +138,15 @@ public class PlayerMotor : MonoBehaviour
         }
         else
         {
+            //animator.SetBool("Landing", false);
             verticalVelocity -= gravity * Time.deltaTime;
         }
 
 
 
-        //if (wantsToGoRight)
-        //{
-        //    GoRight();
-        //}
-        //else if (wantsToGoLeft)
-        //{
-        //    GoLeft();
-        //}
-
-        //transform.position = Vector3.Lerp(beforeSideMovePosition, movePlayer, 2f * Time.deltaTime);
-        //controller.Move(Vector3.Lerp(beforeSideMovePosition, movePlayer * Time.fixedDeltaTime, 2f));
-
-        MovePlayer();
-
+        MovePlayerSmoothly();
     }
-
-    void MoveToSide(bool goingRight)
-    {
-        currentLane += goingRight ? 1 : -1;
-        currentLane = Mathf.Clamp(currentLane, 0, 2);
-        print("Current lane : " + currentLane);
-    }
-
-    void MovePlayer()
+    void MovePlayerSmoothly()
     {
         Vector3 targetVector = Vector3.forward * transform.position.z;
 
@@ -189,7 +166,28 @@ public class PlayerMotor : MonoBehaviour
 
         controller.Move(movePlayer * Time.deltaTime);
     }
-
+    void MovePlayer()
+    {
+        movePlayer = Vector3.zero;
+        //movePlayer.x = Input.GetAxis("Horizontal") * playerRunningSpeed;
+        //if (wantsToGoRight)
+        //{
+        //    GoRight();
+        //}
+        //else if (wantsToGoLeft)
+        //{
+        //    GoLeft();
+        //}
+        movePlayer.y = verticalVelocity;
+        movePlayer.z = playerRunningSpeed;
+        controller.Move(movePlayer * Time.deltaTime);
+    }
+    void MoveToSide(bool goingRight)
+    {
+        currentLane += goingRight ? 1 : -1;
+        currentLane = Mathf.Clamp(currentLane, 0, 2);
+        print("Current lane : " + currentLane);
+    }
     void GoRight()
     {
         if (currentLane == 3)
@@ -198,7 +196,7 @@ public class PlayerMotor : MonoBehaviour
             //controller.enabled = false;
         }
         currentLane++;
-        movePlayer.x = moveRightLeftDistance;
+        movePlayer.x = 77f;
         wantsToGoRight = false;
     }
 
@@ -210,7 +208,7 @@ public class PlayerMotor : MonoBehaviour
             //controller.enabled = false;
         }
         currentLane--;
-        movePlayer.x = -moveRightLeftDistance;
+        movePlayer.x = -77f;
         wantsToGoLeft = false;
     }
     void PlayRoll()
@@ -226,7 +224,7 @@ public class PlayerMotor : MonoBehaviour
     {
         animator.SetBool("Roll", false);
 
-        //SetDefaultControllerCenter();
+        SetDefaultControllerCenter();
         animator.speed = 1;
     }
 
