@@ -6,16 +6,17 @@ public class PlayerMotor : MonoBehaviour
     private Animator animator;
 
     private Vector3 movePlayer;
+    private Vector3 targetVector;
 
     private readonly float startingAnimationDuration = 0.5f;
 
     private float verticalVelocity = 0.0f;
-    private float playerRunningSpeed = 5.0f;
+    private float playerRunningSpeed = 12.0f;
     private float jumpForceMultiplier = 4.0f;
     private float gravity = 24.0f;
     private float rollingAnimationDuration = 0.3f;
     private float jumpingDuration = 0.4f;
-    private float moveRightLeftDistance = 2f;
+    private float moveRightLeftDistance = 1.6f;
     private float startedRollingTime;
     private float startedJumpingTime;
 
@@ -48,6 +49,7 @@ public class PlayerMotor : MonoBehaviour
         //movePlayer.y = verticalVelocity;
         //movePlayer.z = playerRunningSpeed;
         //controller.Move(movePlayer * Time.fixedDeltaTime);
+
     }
     void Update()
     {
@@ -106,6 +108,10 @@ public class PlayerMotor : MonoBehaviour
             wantsToJump = false;
         }
 
+        if (transform.position == targetVector)
+        {
+            print("Da");
+        }
         if (Input.GetKeyDown("d"))
         {
             wantsToGoRight = true;
@@ -145,10 +151,17 @@ public class PlayerMotor : MonoBehaviour
 
 
         MovePlayerSmoothly();
+
+        //MovePlayer();
+    }
+
+    private void LateUpdate()
+    {
+
     }
     void MovePlayerSmoothly()
     {
-        Vector3 targetVector = Vector3.forward * transform.position.z;
+        targetVector = Vector3.forward * transform.position.z;
 
         if (currentLane == 0)
         {
