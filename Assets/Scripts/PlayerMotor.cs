@@ -6,15 +6,18 @@ public class PlayerMotor : MonoBehaviour
     private Animator animator;
 
     private Vector3 movePlayer;
+    private Vector3 beforeSideMovePosition;
 
     private readonly float startingAnimationDuration = 0.5f;
 
     private float verticalVelocity = 0.0f;
-    private float playerRunningSpeed = 2.0f;
-    private float jumpForceMultiplier = 4.0f;
+    private float playerRunningSpeed = 13.0f;
+    private float jumpForceMultiplier = 5.0f;
     private float gravity = 24.0f;
     private float rollingAnimationDuration = 0.3f;
     private float jumpingDuration = 0.4f;
+    private float moveRightLeftTransitionSpeed = 2f;
+    private float moveRightLeftDistance = 2f;
     private float startedRollingTime;
     private float startedJumpingTime;
 
@@ -25,7 +28,8 @@ public class PlayerMotor : MonoBehaviour
     private bool wantsToGoRight = false;
     private bool wantsToGoLeft = false;
 
-    private int currentLane = 2;
+    private int currentLane = 1;
+
 
     void Start()
     {
@@ -35,24 +39,24 @@ public class PlayerMotor : MonoBehaviour
 
     void FixedUpdate()
     {
-        movePlayer = Vector3.zero;
-        if (wantsToGoRight)
-        {
-            GoRight();
-        }
-        else if (wantsToGoLeft)
-        {
-            GoLeft();
-        }
-        movePlayer.y = verticalVelocity;
-        movePlayer.z = playerRunningSpeed;
-        controller.Move(movePlayer * Time.fixedDeltaTime);
+        //movePlayer = Vector3.zero;
+
+        //if (wantsToGoRight)
+        //{
+        //    GoRight();
+        //}
+        //else if (wantsToGoLeft)
+        //{
+        //    GoLeft();
+        //}
+
+        //controller.Move(Vector3.Lerp(beforeSideMovePosition, movePlayer * Time.fixedDeltaTime, 1f));
     }
     void Update()
     {
         if (Time.time - startedRollingTime > rollingAnimationDuration && isRolling)
         {
-            //SetDefaultControllerCenter();
+            SetDefaultControllerCenter();
             RollEnded();
             isRolling = false;
         }
@@ -109,12 +113,14 @@ public class PlayerMotor : MonoBehaviour
         {
             wantsToGoRight = true;
             wantsToGoLeft = false;
+            MoveToSide(true);
         }
 
         if (Input.GetKeyDown("a"))
         {
             wantsToGoLeft = true;
             wantsToGoRight = false;
+            MoveToSide(false);
         }
 
         if (isJumping == true)
@@ -135,19 +141,11 @@ public class PlayerMotor : MonoBehaviour
         }
         else
         {
-            //animator.SetBool("Landing", false);
             verticalVelocity -= gravity * Time.deltaTime;
         }
 
 
 
-        MovePlayer();
-    }
-
-    void MovePlayer()
-    {
-        movePlayer = Vector3.zero;
-        //movePlayer.x = Input.GetAxis("Horizontal") * playerRunningSpeed;
         //if (wantsToGoRight)
         //{
         //    GoRight();
@@ -156,8 +154,39 @@ public class PlayerMotor : MonoBehaviour
         //{
         //    GoLeft();
         //}
+
+        //transform.position = Vector3.Lerp(beforeSideMovePosition, movePlayer, 2f * Time.deltaTime);
+        //controller.Move(Vector3.Lerp(beforeSideMovePosition, movePlayer * Time.fixedDeltaTime, 2f));
+
+        MovePlayer();
+
+    }
+
+    void MoveToSide(bool goingRight)
+    {
+        currentLane += goingRight ? 1 : -1;
+        currentLane = Mathf.Clamp(currentLane, 0, 2);
+        print("Current lane : " + currentLane);
+    }
+
+    void MovePlayer()
+    {
+        Vector3 targetVector = Vector3.forward * transform.position.z;
+
+        if (currentLane == 0)
+        {
+            targetVector += Vector3.left * moveRightLeftDistance;
+        }
+        else if (currentLane == 2)
+        {
+            targetVector += Vector3.right * moveRightLeftDistance;
+        }
+
+        movePlayer = Vector3.zero;
+        movePlayer.x = (targetVector - transform.position).normalized.x * playerRunningSpeed;
         movePlayer.y = verticalVelocity;
         movePlayer.z = playerRunningSpeed;
+
         controller.Move(movePlayer * Time.deltaTime);
     }
 
@@ -169,7 +198,7 @@ public class PlayerMotor : MonoBehaviour
             //controller.enabled = false;
         }
         currentLane++;
-        movePlayer.x = 77f;
+        movePlayer.x = moveRightLeftDistance;
         wantsToGoRight = false;
     }
 
@@ -181,7 +210,7 @@ public class PlayerMotor : MonoBehaviour
             //controller.enabled = false;
         }
         currentLane--;
-        movePlayer.x = -77f;
+        movePlayer.x = -moveRightLeftDistance;
         wantsToGoLeft = false;
     }
     void PlayRoll()
@@ -191,7 +220,7 @@ public class PlayerMotor : MonoBehaviour
         animator.speed = 0.8f;
         animator.SetBool("Roll", true);
 
-        //SetRollingControllerCenter();
+        SetRollingControllerCenter();
     }
     void RollEnded()
     {
