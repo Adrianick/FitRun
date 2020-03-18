@@ -5,7 +5,7 @@ public class ItemRotate : MonoBehaviour
     // Start is called before the first frame update
     private Transform burgerTransform;
 
-    private float rotationSpeed = 65.0f;
+    private float rotationSpeed = 90.0f;
 
     void Start()
     {

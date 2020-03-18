@@ -3,25 +3,28 @@ using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
+    public ItemGenerator itemGenerator;
     public GameObject[] tilePrefabs;
-
     private Transform playerTransform;
+
+    private List<GameObject> activeTiles = new List<GameObject>();
+
     private float spawnZ = 0.0f;
     private float tileLength = 22.86f; // 1 tile  - 7.62 ; 3 - 22.86
     private float safeZone = 25.0f; // 1 tile - 10 ; 3 - 30
     private int amountOfTilesOnScreen = 5;
     private int lastPrefabIndex = 0;
 
-    private List<GameObject> activeTiles = new List<GameObject>();
 
     // Start is called before the first frame update
     private void Start()
     {
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        itemGenerator = GameObject.FindGameObjectWithTag("ItemGenerator").GetComponent<ItemGenerator>();
 
         for (int i = 0; i < amountOfTilesOnScreen; i++)
         {
-            if (i < 5)
+            if (i < 2)
             {
                 SpawnTile(0);
             }
@@ -54,10 +57,12 @@ public class MapGenerator : MonoBehaviour
 
         if (prefabIndex == -1)
         {
-            go = Instantiate(tilePrefabs[RandomPrefabIndex()]) as GameObject;
+            prefabIndex = RandomPrefabIndex();
+            go = Instantiate(tilePrefabs[prefabIndex]) as GameObject;
         }
         else
         {
+
             go = Instantiate(tilePrefabs[prefabIndex]) as GameObject;
         }
 
@@ -65,6 +70,8 @@ public class MapGenerator : MonoBehaviour
         go.transform.position = Vector3.forward * spawnZ;
         spawnZ = spawnZ + tileLength;
         activeTiles.Add(go);
+
+        itemGenerator.SpawnItems(tilePrefabs[prefabIndex].gameObject.name, go.transform.position);
     }
 
     private void DeleteTile()
@@ -72,7 +79,6 @@ public class MapGenerator : MonoBehaviour
         Destroy(activeTiles[0]);
         activeTiles.RemoveAt(0);
     }
-
     private int RandomPrefabIndex()
     {
         int randomIndex = lastPrefabIndex;
