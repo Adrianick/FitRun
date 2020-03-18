@@ -5,14 +5,21 @@ public class MapGenerator : MonoBehaviour
 {
     public ItemGenerator itemGenerator;
     public GameObject[] tilePrefabs;
+    public GameObject oceanPrefab;
     private Transform playerTransform;
 
     private List<GameObject> activeTiles = new List<GameObject>();
+    private List<GameObject> activeOceans = new List<GameObject>();
 
     private float spawnZ = 0.0f;
+    private float oceanSpawnZ = 0.0f;
+    private float oceanDestroyZ = 0.0f;
+    private float oceanLength = 750.0f; // 1 tile  - 7.62 ; 3 - 22.86
     private float tileLength = 22.86f; // 1 tile  - 7.62 ; 3 - 22.86
     private float safeZone = 25.0f; // 1 tile - 10 ; 3 - 30
-    private int amountOfTilesOnScreen = 5;
+    private float oceanSpawnSafeZone = 550.0f;
+    private float oceanDestroySafeZone = 50.0f; // 50 after the end of the ocean
+    private int amountOfTilesOnScreen = 6;
     private int lastPrefabIndex = 0;
 
 
@@ -43,6 +50,14 @@ public class MapGenerator : MonoBehaviour
             SpawnTile();
             DeleteTile();
         }
+        if (playerTransform.position.z - oceanSpawnSafeZone > (oceanSpawnZ - oceanLength))
+        {
+            SpawnOcean();
+        }
+        if (playerTransform.position.z - oceanDestroySafeZone > (oceanDestroyZ + oceanLength))
+        {
+            DeleteOcean();
+        }
     }
 
     // Update is called once per frame
@@ -50,7 +65,20 @@ public class MapGenerator : MonoBehaviour
     {
 
     }
-
+    private void SpawnOcean()
+    {
+        GameObject ocean = Instantiate(oceanPrefab) as GameObject;
+        ocean.transform.SetParent(transform);
+        ocean.transform.position = Vector3.forward * oceanSpawnZ;
+        oceanSpawnZ = oceanSpawnZ + oceanLength;
+        activeOceans.Add(ocean);
+    }
+    private void DeleteOcean()
+    {
+        Destroy(activeOceans[0]);
+        activeOceans.RemoveAt(0);
+        oceanDestroyZ += oceanLength;
+    }
     private void SpawnTile(int prefabIndex = -1)
     {
         GameObject go;

@@ -11,9 +11,9 @@ public class PlayerMotor : MonoBehaviour
     private readonly float startingAnimationDuration = 0.5f;
 
     private float verticalVelocity = 0.0f;
-    private float playerRunningSpeed = 12.0f;
-    private float jumpForceMultiplier = 4.0f;
-    private float gravity = 24.0f;
+    private float playerRunningSpeed = 13.0f;
+    private float jumpForceMultiplier = 3.50f;
+    private float gravity = 34.0f;
     private float rollingAnimationDuration = 0.3f;
     private float jumpingDuration = 0.4f;
     private float moveRightLeftDistance = 1.6f;
@@ -173,7 +173,8 @@ public class PlayerMotor : MonoBehaviour
         }
 
         movePlayer = Vector3.zero;
-        movePlayer.x = (targetVector - transform.position).normalized.x * playerRunningSpeed;
+        //movePlayer.x = (targetVector - transform.position).normalized.x * playerRunningSpeed;
+        movePlayer.x = (targetVector - transform.position).x * playerRunningSpeed;
         movePlayer.y = verticalVelocity;
         movePlayer.z = playerRunningSpeed;
 
