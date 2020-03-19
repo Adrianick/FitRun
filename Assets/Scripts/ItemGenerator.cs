@@ -3,14 +3,20 @@ using UnityEngine;
 
 public class ItemGenerator : MonoBehaviour
 {
+ 
 
     public MapGenerator mapGenerator;
     public GameObject[] itemPrefabs;
+    private GameManager gameManager;
 
-    private List<GameObject> activeItems = new List<GameObject>();
+    public List<GameObject> activeItems = new List<GameObject>();
+    public bool[] isGood;
+   
     void Start()
     {
         mapGenerator = GameObject.FindGameObjectWithTag("MapGenerator").GetComponent<MapGenerator>();
+        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+
     }
 
     // Update is called once per frame
@@ -27,6 +33,7 @@ public class ItemGenerator : MonoBehaviour
             {
                 Destroy(activeItems[i]);
                 activeItems.RemoveAt(i);
+                //gameManager.UpdateHighScore(25);
             }
         }
     }
@@ -36,27 +43,30 @@ public class ItemGenerator : MonoBehaviour
     {
         //print(tileTypeName);
         GameObject go;
-
+        int itemIndex = Random.Range(0, itemPrefabs.Length);
         if (tileTypeName.Equals("Tile_2Large1Small")) // 3 1 3
         {
-            go = Instantiate(itemPrefabs[Random.Range(0, itemPrefabs.Length)]) as GameObject;
+            go = Instantiate(itemPrefabs[itemIndex]) as GameObject;
         }
         else if (tileTypeName.Equals("Tile_3SmallBridges")) // 1 1 1
         {
-            go = Instantiate(itemPrefabs[Random.Range(0, itemPrefabs.Length)]) as GameObject;
+            go = Instantiate(itemPrefabs[itemIndex]) as GameObject;
         }
         else /// 3 3 3
         {
-            go = Instantiate(itemPrefabs[Random.Range(0, itemPrefabs.Length)]) as GameObject;
+            go = Instantiate(itemPrefabs[itemIndex]) as GameObject;
         }
-
+             
         go.transform.SetParent(transform);
         go.transform.position = new Vector3(tilePosition.x, tilePosition.y + 0.65f, tilePosition.z + 15.24f);
-
+             
         // Scale * 3 for banana
         go.transform.localScale *= 5.5f;
+
+
         // Added ItemRotateScript
         go.AddComponent<ItemRotate>();
+        go.GetComponent<ItemRotate>().SetIsGood(isGood[itemIndex]);
         go.AddComponent<BoxCollider>();
         go.GetComponent<BoxCollider>().isTrigger = true;
         // Rotate Random

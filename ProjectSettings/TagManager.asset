@@ -9,6 +9,9 @@ TagManager:
   - MapGenerator
   - Ocean
   - SoundManager
+  - GameManager
+  - DeathMenu
+  - UserInterface
   layers:
   - Default
   - TransparentFX

@@ -20,6 +20,7 @@ public class PlayerMotor : MonoBehaviour
     private float moveRightLeftDistance = 1.6f;
     private float startedRollingTime;
     private float startedJumpingTime;
+    private float increaseRunningSpeedMultiplier = 0.4f;
 
     private bool isJumping = false;
     private bool isRolling = false;
@@ -28,12 +29,16 @@ public class PlayerMotor : MonoBehaviour
     private bool wantsToGoRight = false;
     private bool wantsToGoLeft = false;
 
+   
+
     private int currentLane = 1;
+    private float startTime;
 
     void Start()
     {
         animator = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
+        startTime = Time.time;
     }
 
     void FixedUpdate()
@@ -66,7 +71,7 @@ public class PlayerMotor : MonoBehaviour
             JumpEnded();
             //isJumping = false;
         }
-        if (Time.time < startingAnimationDuration)
+        if (Time.time - startTime < startingAnimationDuration)
         {
             controller.Move(Vector3.up * verticalVelocity);
             controller.Move(Vector3.forward * playerRunningSpeed * Time.deltaTime);
@@ -309,10 +314,15 @@ public class PlayerMotor : MonoBehaviour
     {
         animator.SetBool("Attack", false);
     }
-    void HitFinished()
+    public void HitFinished()
     {
         animator.SetBool("GotHit", false);
         animator.SetBool("Died", true);
         this.enabled = false;
+    }
+
+    public void UpdateRunningSpeed()
+    {
+        playerRunningSpeed += playerRunningSpeed * increaseRunningSpeedMultiplier;
     }
 }
