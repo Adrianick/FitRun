@@ -125,7 +125,10 @@ public class PlayerMotor : MonoBehaviour
             wantsToGoRight = false;
             MoveToSide(false);
         }
-
+        if (Input.GetKeyDown("f"))
+        {
+            animator.SetBool("Attack", true);
+        }
         if (isJumping == true)
         {
             verticalVelocity = jumpForceMultiplier;
@@ -157,7 +160,11 @@ public class PlayerMotor : MonoBehaviour
 
     private void LateUpdate()
     {
-
+        if (transform.position.y <= -11)
+        {
+            //print("Ai murit ba!");
+            this.enabled = false;
+        }
     }
     void MovePlayerSmoothly()
     {
@@ -171,7 +178,22 @@ public class PlayerMotor : MonoBehaviour
         {
             targetVector += Vector3.right * moveRightLeftDistance;
         }
-
+        else if (currentLane == -1)
+        {
+            targetVector += 2f * Vector3.left * moveRightLeftDistance;
+        }
+        else if (currentLane == 3)
+        {
+            targetVector += 2f * Vector3.right * moveRightLeftDistance;
+        }
+        else if (currentLane == -2)
+        {
+            targetVector += 3f * Vector3.left * moveRightLeftDistance;
+        }
+        else if (currentLane == 4)
+        {
+            targetVector += 3f * Vector3.right * moveRightLeftDistance;
+        }
         movePlayer = Vector3.zero;
         //movePlayer.x = (targetVector - transform.position).normalized.x * playerRunningSpeed;
         movePlayer.x = (targetVector - transform.position).x * playerRunningSpeed;
@@ -199,8 +221,8 @@ public class PlayerMotor : MonoBehaviour
     void MoveToSide(bool goingRight)
     {
         currentLane += goingRight ? 1 : -1;
-        currentLane = Mathf.Clamp(currentLane, 0, 2);
-        print("Current lane : " + currentLane);
+        currentLane = Mathf.Clamp(currentLane, -2, 4);
+        //print("Current lane : " + currentLane);
     }
     void GoRight()
     {
@@ -281,5 +303,15 @@ public class PlayerMotor : MonoBehaviour
         movePlayer.y = 1.3f;
         movePlayer.z = 0;
         controller.center = movePlayer;
+    }
+    void Hit()
+    {
+        animator.SetBool("Attack", false);
+    }
+    void HitFinished()
+    {
+        animator.SetBool("GotHit", false);
+        animator.SetBool("Died", true);
+        this.enabled = false;
     }
 }

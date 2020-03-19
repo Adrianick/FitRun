@@ -19,6 +19,19 @@ public class ItemGenerator : MonoBehaviour
 
     }
 
+    public void DestroyInactiveItems()
+    {
+        for (int i = 0; i < activeItems.Count; i++)
+        {
+            if (!activeItems[i].gameObject.activeInHierarchy)
+            {
+                Destroy(activeItems[i]);
+                activeItems.RemoveAt(i);
+            }
+        }
+    }
+
+
     public void SpawnItems(string tileTypeName, Vector3 tilePosition)
     {
         //print(tileTypeName);
@@ -44,6 +57,8 @@ public class ItemGenerator : MonoBehaviour
         go.transform.localScale *= 5.5f;
         // Added ItemRotateScript
         go.AddComponent<ItemRotate>();
+        go.AddComponent<BoxCollider>();
+        go.GetComponent<BoxCollider>().isTrigger = true;
         // Rotate Random
         go.transform.eulerAngles = new Vector3(0, Random.Range(0, 180), 0);
 
