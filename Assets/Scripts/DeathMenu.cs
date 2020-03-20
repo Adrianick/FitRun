@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class DeathMenu : MonoBehaviour
@@ -16,7 +14,7 @@ public class DeathMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void GameOver()
@@ -28,11 +26,12 @@ public class DeathMenu : MonoBehaviour
     public void ToggleEndMenu(float score)
     {
         gameObject.SetActive(true);
-  
+
     }
 
     public void Restart()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene("WS6");
         //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }

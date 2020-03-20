@@ -4,7 +4,7 @@ public class PlayerMotor : MonoBehaviour
 {
     private CharacterController controller;
     private Animator animator;
-
+    private DeathMenu deathMenu;
     private Vector3 movePlayer;
     private Vector3 targetVector;
 
@@ -29,7 +29,7 @@ public class PlayerMotor : MonoBehaviour
     private bool wantsToGoRight = false;
     private bool wantsToGoLeft = false;
 
-   
+
 
     private int currentLane = 1;
     private float startTime;
@@ -39,6 +39,7 @@ public class PlayerMotor : MonoBehaviour
         animator = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
         startTime = Time.time;
+        deathMenu = GameObject.FindGameObjectWithTag("UserInterface").GetComponentInChildren<DeathMenu>(true);
     }
 
     void FixedUpdate()
@@ -169,7 +170,7 @@ public class PlayerMotor : MonoBehaviour
         if (transform.position.y <= -11)
         {
             //print("Ai murit ba!");
-            this.enabled = false;
+            Lost();
         }
     }
     void MovePlayerSmoothly()
@@ -318,9 +319,14 @@ public class PlayerMotor : MonoBehaviour
     {
         animator.SetBool("GotHit", false);
         animator.SetBool("Died", true);
-        this.enabled = false;
+        Lost();
     }
-
+    public void Lost()
+    {
+        this.enabled = false;
+        Time.timeScale = 0;
+        deathMenu.GameOver();
+    }
     public void UpdateRunningSpeed()
     {
         playerRunningSpeed += playerRunningSpeed * increaseRunningSpeedMultiplier;

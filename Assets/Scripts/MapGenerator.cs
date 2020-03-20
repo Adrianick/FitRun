@@ -3,9 +3,20 @@ using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
+    public class Cv
+    {
+        public GameObject gameObject;
+
+        [SerializeField]
+        public bool isD;
+    }
+
     public ItemGenerator itemGenerator;
     public GameObject[] tilePrefabs;
+    //public Cv[] tilePrefabs;
     public GameObject oceanPrefab;
+    public bool[] isGood;
+
     private Transform playerTransform;
 
     private List<GameObject> activeTiles = new List<GameObject>();

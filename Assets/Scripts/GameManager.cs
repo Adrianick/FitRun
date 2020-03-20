@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 
@@ -40,11 +38,11 @@ public class GameManager : MonoBehaviour
             speedUpInterval += speedUpIncrease;
             player.UpdateRunningSpeed();
 
-        } 
+        }
         else if (highScore < 0)
         {
-            player.HitFinished();
-            deathMenu.GameOver();
+            player.Lost();
+            //deathMenu.GameOver();
         }
     }
 }
