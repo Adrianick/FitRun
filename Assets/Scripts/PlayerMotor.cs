@@ -3,7 +3,7 @@
 public class PlayerMotor : MonoBehaviour
 {
     private CharacterController controller;
-    private Animator animator;
+    public Animator animator;
     private DeathMenu deathMenu;
     private Vector3 movePlayer;
     private Vector3 targetVector;
@@ -317,8 +317,15 @@ public class PlayerMotor : MonoBehaviour
     }
     public void HitFinished()
     {
+
         animator.SetBool("GotHit", false);
-        animator.SetBool("Died", true);
+        animator.SetBool("ReadyToDie", true);
+        this.enabled = false;
+    }
+
+    public void PlayerDied()
+    {
+        animator.SetBool("ReadyToDie", false);
         Lost();
     }
     public void Lost()

@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
         }
         else if (highScore < 0)
         {
-            player.Lost();
+            player.animator.SetBool("GotHit", true);
             //deathMenu.GameOver();
         }
     }

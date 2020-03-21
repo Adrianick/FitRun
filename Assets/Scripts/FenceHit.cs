@@ -6,11 +6,11 @@ public class FenceHit : MonoBehaviour
 
     private Animator animator;
     private CharacterController controller;
-    private DeathMenu deathMenu;
+    //private DeathMenu deathMenu;
     void Start()
     {
         controller = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterController>();
-        deathMenu = GameObject.FindGameObjectWithTag("UserInterface").GetComponentInChildren<DeathMenu>(true);
+        //deathMenu = GameObject.FindGameObjectWithTag("UserInterface").GetComponentInChildren<DeathMenu>(true);
     }
 
     // Update is called once per frame
@@ -25,6 +25,6 @@ public class FenceHit : MonoBehaviour
         animator = controller.GetComponent<Animator>();
         animator.SetBool("GotHit", true);
         this.enabled = false;
-        deathMenu.GameOver();
+        //deathMenu.GameOver();
     }
 }
