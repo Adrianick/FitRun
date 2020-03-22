@@ -32,17 +32,25 @@ public class ItemRotate : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //Destroy(this);
+        //if (this.GetComponent<AudioSource>())
+        //{
+        AudioClip audioClip = itemGenerator.iPrefabs[0].audioClip;
+        this.GetComponent<AudioSource>().PlayOneShot(audioClip);
+        //}
         if (this.isGood)
         {
             this.gameManager.UpdateHighScore(goodItem);
-        } else
+        }
+        else
         {
             this.gameManager.UpdateHighScore(badItem);
         }
         this.gameObject.SetActive(false);
         itemGenerator.DestroyInactiveItems();
-       
-       
+
+        //AudioSource audio = GetComponent<AudioSource>();
+        //itemGenerator.iPrefabs[0].itemPrefab.GetComponent<AudioSource>().Play();
+
     }
 
     public void SetIsGood(bool isGood)
