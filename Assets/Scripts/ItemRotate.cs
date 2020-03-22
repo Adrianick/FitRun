@@ -2,28 +2,25 @@
 
 public class ItemRotate : MonoBehaviour
 {
-    // Start is called before the first frame update
     private Transform burgerTransform;
     public ItemGenerator itemGenerator;
     public GameManager gameManager;
+    public SoundManager soundManager;
+
     private float rotationSpeed = 130.0f;
     private const int goodItem = 10;
     private const int badItem = -25;
     private bool isGood = false;
 
-    //public ItemRotate(bool isGood)
-    //{
-    //    this.isGood = isGood;
-    //}
+
     void Start()
     {
-        //burgerTransform = GameObject.FindGameObjectWithTag("Item").transform;
         itemGenerator = GameObject.FindGameObjectWithTag("ItemGenerator").GetComponent<ItemGenerator>();
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
-
+        soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         transform.Rotate(0, rotationSpeed * Time.deltaTime, 0);
@@ -31,12 +28,7 @@ public class ItemRotate : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //Destroy(this);
-        //if (this.GetComponent<AudioSource>())
-        //{
-        AudioClip audioClip = itemGenerator.iPrefabs[0].audioClip;
-        this.GetComponent<AudioSource>().PlayOneShot(audioClip);
-        //}
+
         if (this.isGood)
         {
             this.gameManager.UpdateHighScore(goodItem);
@@ -45,13 +37,11 @@ public class ItemRotate : MonoBehaviour
         {
             this.gameManager.UpdateHighScore(badItem);
         }
+        soundManager.PlaySound(this.isGood);
         this.gameObject.SetActive(false);
         itemGenerator.DestroyInactiveItems();
-
-        //AudioSource audio = GetComponent<AudioSource>();
-        //itemGenerator.iPrefabs[0].itemPrefab.GetComponent<AudioSource>().Play();
-
     }
+
 
     public void SetIsGood(bool isGood)
     {

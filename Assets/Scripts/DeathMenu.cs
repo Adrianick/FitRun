@@ -5,10 +5,11 @@ public class DeathMenu : MonoBehaviour
 {
     // Start is called before the first frame update
     private GameManager gameManager;
+    private SoundManager soundManager;
     void Start()
     {
         gameObject.SetActive(false);
-
+        soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
     }
 
     // Update is called once per frame
@@ -19,6 +20,7 @@ public class DeathMenu : MonoBehaviour
 
     public void GameOver()
     {
+        soundManager.StopMusic();
         gameObject.SetActive(true);
         //Pause the whole game
     }
@@ -32,7 +34,7 @@ public class DeathMenu : MonoBehaviour
     public void Restart()
     {
         Time.timeScale = 1;
-        SceneManager.LoadScene("WS7");
+        SceneManager.LoadScene("WS8");
         //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 

@@ -5,6 +5,7 @@ public class PlayerMotor : MonoBehaviour
     private CharacterController controller;
     public Animator animator;
     private DeathMenu deathMenu;
+    private SoundManager soundManager;
     private Vector3 movePlayer;
     private Vector3 targetVector;
 
@@ -40,6 +41,7 @@ public class PlayerMotor : MonoBehaviour
         controller = GetComponent<CharacterController>();
         startTime = Time.time;
         deathMenu = GameObject.FindGameObjectWithTag("UserInterface").GetComponentInChildren<DeathMenu>(true);
+        soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
     }
 
     void FixedUpdate()
@@ -330,6 +332,7 @@ public class PlayerMotor : MonoBehaviour
     }
     public void Lost()
     {
+        //soundManager.PlaySound(false);
         this.enabled = false;
         Time.timeScale = 0;
         deathMenu.GameOver();

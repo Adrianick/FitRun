@@ -1,18 +1,42 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private AudioSource audioSource;
+    public AudioClip goodItemAudioClip;
+    public AudioClip badItemAudioClip;
+    public AudioClip menuMusic;
+
     void Start()
     {
-        
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.volume = 0.2f;
     }
-
-    // Update is called once per frame
     void Update()
     {
-        
+
+    }
+
+    public void StopMusic()
+    {
+        //gameObject.GetComponent<AudioSource>().Stop();
+        AudioSource music = gameObject.GetComponent<AudioSource>();
+        music.clip = menuMusic;
+        music.Play();
+    }
+
+    public void PlaySound(bool isGood)
+    {
+
+        if (isGood)
+        {
+            audioSource.PlayOneShot(goodItemAudioClip);
+        }
+        else
+        {
+            audioSource.PlayOneShot(badItemAudioClip);
+        }
+
+
     }
 }
