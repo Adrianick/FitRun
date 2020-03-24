@@ -13,11 +13,11 @@ public class PlayerMotor : MonoBehaviour
     private readonly float startingAnimationDuration = 0.5f;
 
     private float verticalVelocity = 0.0f;
-    private float playerRunningSpeed = 13.0f;
-    private float jumpForceMultiplier = 4.00f;
-    private float gravity = 34.0f;
+    private float playerRunningSpeed = 9.0f;
+    private float jumpForceMultiplier = 6.00f;
+    private float gravity = 22.0f;
     private float rollingAnimationDuration = 0.3f;
-    private float jumpingDuration = 0.4f;
+    private float jumpingDuration = 0.20f;
     private float moveRightLeftDistance = 1.6f;
     private float startedRollingTime;
     private float startedJumpingTime;
@@ -29,6 +29,8 @@ public class PlayerMotor : MonoBehaviour
     private bool wantsToJump = false;
     private bool wantsToGoRight = false;
     private bool wantsToGoLeft = false;
+    private bool isRollingFromJump = false;
+
 
 
 
@@ -70,9 +72,8 @@ public class PlayerMotor : MonoBehaviour
         }
         if (Time.time - startedJumpingTime > jumpingDuration && isJumping)
         {
-            //SetDefaultControllerCenter();
+            //jumpingDuration += 0.1f;
             JumpEnded();
-            //isJumping = false;
         }
         if (Time.time - startTime < startingAnimationDuration)
         {
@@ -83,12 +84,11 @@ public class PlayerMotor : MonoBehaviour
 
         if (this.animator.GetCurrentAnimatorStateInfo(0).fullPathHash == Animator.StringToHash("Base Layer.Running"))
         {
-            if (wantsToJump)// && !isRolling)
+            if (wantsToJump)
             {
 
                 if (isRolling)
                 {
-                    //PlayJumpFromRoll();
                     PlayJump();
                     isRolling = false;
                     RollEnded();
@@ -97,11 +97,7 @@ public class PlayerMotor : MonoBehaviour
                 {
                     PlayJump();
                 }
-                //PlayJump();
                 wantsToJump = false;
-
-                //MovePlayer();
-                //return;
             }
         }
 
@@ -115,6 +111,8 @@ public class PlayerMotor : MonoBehaviour
         {
             wantsToRoll = true;
             wantsToJump = false;
+            isJumping = false;
+            //jumpingDuration -= 0.1f;
         }
 
         if (transform.position == targetVector)
@@ -140,10 +138,16 @@ public class PlayerMotor : MonoBehaviour
         }
         if (isJumping == true)
         {
+            if (wantsToRoll)
+            {
+                animator.SetBool("WantsToRollFromJump", true);
+            }
             verticalVelocity = jumpForceMultiplier;
+            print("isJumping");
         }
         else if (controller.isGrounded)
         {
+
             if (wantsToRoll)
             {
                 PlayRoll();
@@ -151,13 +155,20 @@ public class PlayerMotor : MonoBehaviour
 
             }
             verticalVelocity = -0.5f;
+            print("Grounded");
+
             animator.SetBool("Landing", false);
             animator.SetBool("Jump", false);
         }
         else
         {
-            //animator.SetBool("Landing", false);
             verticalVelocity -= gravity * Time.deltaTime;
+            if (wantsToRoll)
+            {
+                animator.SetBool("Jump", false);
+                animator.SetBool("Landing", true);
+                verticalVelocity -= 5f * gravity * Time.deltaTime;
+            }
         }
 
 
@@ -214,15 +225,6 @@ public class PlayerMotor : MonoBehaviour
     void MovePlayer()
     {
         movePlayer = Vector3.zero;
-        //movePlayer.x = Input.GetAxis("Horizontal") * playerRunningSpeed;
-        //if (wantsToGoRight)
-        //{
-        //    GoRight();
-        //}
-        //else if (wantsToGoLeft)
-        //{
-        //    GoLeft();
-        //}
         movePlayer.y = verticalVelocity;
         movePlayer.z = playerRunningSpeed;
         controller.Move(movePlayer * Time.deltaTime);
@@ -258,6 +260,7 @@ public class PlayerMotor : MonoBehaviour
     }
     void PlayRoll()
     {
+
         startedRollingTime = Time.time;
         isRolling = true;
         animator.speed = 0.8f;
@@ -290,10 +293,9 @@ public class PlayerMotor : MonoBehaviour
     }
     void JumpEnded()
     {
-        animator.SetBool("WantsToJumpFromRoll", false);
+        animator.SetBool("Jump", false);
         animator.SetBool("Landing", true);
         isJumping = false;
-        //controller.center = new Vector3(controller.center.x, 1.3f, controller.center.z);
         animator.speed = 1;
 
     }
