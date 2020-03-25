@@ -27,9 +27,9 @@ public class PlayerMotor : MonoBehaviour
     private bool isRolling = false;
     private bool wantsToRoll = false;
     private bool wantsToJump = false;
-    private bool wantsToGoRight = false;
-    private bool wantsToGoLeft = false;
-    private bool isRollingFromJump = false;
+    //private bool wantsToGoRight = false;
+    //private bool wantsToGoLeft = false;
+    //private bool isRollingFromJump = false;
 
 
 
@@ -121,15 +121,15 @@ public class PlayerMotor : MonoBehaviour
         }
         if (Input.GetKeyDown("d"))
         {
-            wantsToGoRight = true;
-            wantsToGoLeft = false;
+            //wantsToGoRight = true;
+            //wantsToGoLeft = false;
             MoveToSide(true);
         }
 
         if (Input.GetKeyDown("a"))
         {
-            wantsToGoLeft = true;
-            wantsToGoRight = false;
+            //wantsToGoLeft = true;
+            //wantsToGoRight = false;
             MoveToSide(false);
         }
         if (Input.GetKeyDown("f"))
@@ -155,7 +155,7 @@ public class PlayerMotor : MonoBehaviour
 
             }
             verticalVelocity = -0.5f;
-            print("Grounded");
+            //print("Grounded");
 
             animator.SetBool("Landing", false);
             animator.SetBool("Jump", false);
@@ -244,7 +244,7 @@ public class PlayerMotor : MonoBehaviour
         }
         currentLane++;
         movePlayer.x = 77f;
-        wantsToGoRight = false;
+        //wantsToGoRight = false;
     }
 
     void GoLeft()
@@ -256,7 +256,7 @@ public class PlayerMotor : MonoBehaviour
         }
         currentLane--;
         movePlayer.x = -77f;
-        wantsToGoLeft = false;
+        //wantsToGoLeft = false;
     }
     void PlayRoll()
     {
@@ -342,5 +342,10 @@ public class PlayerMotor : MonoBehaviour
     public void UpdateRunningSpeed()
     {
         playerRunningSpeed += playerRunningSpeed * increaseRunningSpeedMultiplier;
+    }
+
+    public float GetRunningSpeed()
+    {
+        return playerRunningSpeed;
     }
 }
