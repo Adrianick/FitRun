@@ -10,10 +10,10 @@ public class GameManager : MonoBehaviour
 
     private int highScore = 0;
 
-    public int startSpeedUp = 50;
-    public int endSpeedUp = 1000;
-    public int speedUpInterval = 0;
-    public int speedUpIncrease = 50;
+    public int startSpeedUp;
+    public int endSpeedUp;
+    public int speedUpInterval;
+    public int speedUpIncrease;
 
     private float increaseHighscoreEverySeconds = 0.4f;
     private float startTime;

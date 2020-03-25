@@ -78,7 +78,7 @@ public class PlayerMotor : MonoBehaviour
         if (Time.time - startTime < startingAnimationDuration)
         {
             controller.Move(Vector3.up * verticalVelocity);
-            controller.Move(Vector3.forward * playerRunningSpeed * Time.deltaTime);
+            controller.Move(Vector3.forward * playerRunningSpeed);
             return;
         }
 
@@ -343,7 +343,10 @@ public class PlayerMotor : MonoBehaviour
     {
         playerRunningSpeed += playerRunningSpeed * increaseRunningSpeedMultiplier;
     }
-
+    public float GetZPosition()
+    {
+        return transform.position.z;
+    }
     public float GetRunningSpeed()
     {
         return playerRunningSpeed;

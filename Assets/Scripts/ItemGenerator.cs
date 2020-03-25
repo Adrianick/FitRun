@@ -7,12 +7,20 @@ public class ItemGenerator : MonoBehaviour
 
     private MapGenerator mapGenerator;
     private GameManager gameManager;
+    private PlayerMotor player;
 
     public GameObject[] goodItems;
     public GameObject[] badItems;
     public GameObject[] obstacles;
 
-    public float previousRowPosition;
+    public float distanceBetweenItems = 9f;
+
+    public float lastSpawnedRowPosition = 10f;
+    public float distanceMultiplier = 0.4f;
+    public float safeDestroyZone = 2f;
+    public float mapTileLength;
+    public float endOfLastTile;
+    public float initialTilesTotalLength;
     public float playerRunningSpeed;
 
     public float sideLanesOffset = 1.6f;
@@ -26,8 +34,14 @@ public class ItemGenerator : MonoBehaviour
     {
         mapGenerator = GameObject.FindGameObjectWithTag("MapGenerator").GetComponent<MapGenerator>();
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
-        previousRowPosition = 15f;
-        playerRunningSpeed = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMotor>().GetRunningSpeed();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMotor>();
+        playerRunningSpeed = player.GetRunningSpeed();
+
+        mapTileLength = mapGenerator.TileLength();
+
+        initialTilesTotalLength = mapTileLength * mapGenerator.AmountOfTiles();
+
+        SpawnInitialItems();
     }
 
 
@@ -35,25 +49,49 @@ public class ItemGenerator : MonoBehaviour
     {
 
     }
-
+    void FixedUpdate()
+    {
+        if (player.GetZPosition() > (activeItems[0].transform.position.z + safeDestroyZone))
+        {
+            //SpawnRow();
+            DeleteRow();
+        }
+    }
     public void DestroyInactiveItems()
     {
         for (int i = 0; i < activeItems.Count; i++)
         {
-            if (!activeItems[i].gameObject.activeInHierarchy)
+            print(activeItems[i].gameObject.transform.position.z + "+" + playerRunningSpeed + "< " + player.GetZPosition());
+            if (activeItems[i].gameObject.transform.position.z + playerRunningSpeed < player.GetZPosition())
             {
                 Destroy(activeItems[i]);
                 activeItems.RemoveAt(i);
-                //gameManager.UpdateHighScore(25);
             }
+            //if (!activeItems[i].gameObject.activeInHierarchy)
+            //{
+            //    Destroy(activeItems[i]);
+            //    activeItems.RemoveAt(i);
+            //    //gameManager.UpdateHighScore(25);
+            //}
         }
     }
 
+    public void SpawnNextTileRows()
+    {
+        endOfLastTile += mapTileLength;
+        int numberOfRowsToSpawn = Mathf.FloorToInt((endOfLastTile - lastSpawnedRowPosition) / playerRunningSpeed);
+        print(numberOfRowsToSpawn);
+        for (int i = 0; i < numberOfRowsToSpawn; i++)
+        {
+            SpawnRow();
+        }
+    }
     public void SpawnRow()
     {
         int numberOfObjectsToSpawn = DecideHowManyObjectsToSpawn();
         float nextSpawnRowPosition = CalculateNextSpawnRowPosition();
-        previousRowPosition = nextSpawnRowPosition;
+        print("Spawn distance : " + (nextSpawnRowPosition - lastSpawnedRowPosition));
+        lastSpawnedRowPosition = nextSpawnRowPosition;
         if (numberOfObjectsToSpawn == 1)
         {
             SpawnOneObject();
@@ -68,11 +106,31 @@ public class ItemGenerator : MonoBehaviour
         }
     }
 
+    public void DeleteRow()
+    {
+        Destroy(activeItems[0]);
+        activeItems.RemoveAt(0);
+    }
+
+    public void SpawnInitialItems()
+    {
+        int numberOfInitialRowsToSpawn = Mathf.FloorToInt((initialTilesTotalLength - lastSpawnedRowPosition) / playerRunningSpeed);
+        endOfLastTile = initialTilesTotalLength;
+        for (int i = 0; i < numberOfInitialRowsToSpawn; i++)
+        {
+            SpawnRow();
+        }
+    }
     public float CalculateNextSpawnRowPosition()
     {
-
-
-        return 15f;
+        float newPlayerRunningSpeed = player.GetRunningSpeed();
+        if (newPlayerRunningSpeed > playerRunningSpeed)
+        {
+            distanceBetweenItems += distanceBetweenItems * distanceMultiplier;
+            playerRunningSpeed = newPlayerRunningSpeed;
+        }
+        return lastSpawnedRowPosition + playerRunningSpeed;
+        //return lastSpawnedRowPosition + distanceBetweenItems;
     }
 
     public void SpawnOneObject()
@@ -242,33 +300,54 @@ public class ItemGenerator : MonoBehaviour
         {
             int itemIndex = Random.Range(0, goodItems.Length);
             go = Instantiate(goodItems[itemIndex]) as GameObject;
+
+            // Increase object size
+            go.transform.localScale *= 5.5f;
+
+            // Rotate Random
+            go.transform.eulerAngles = new Vector3(0, Random.Range(0, 180), 0);
+
+            // Added ItemRotateScript
+            go.AddComponent<ItemRotate>();
+            go.GetComponent<ItemRotate>().SetIsGood(true);
+
+            go.transform.SetParent(transform);
+            go.transform.position = new Vector3(spawnPositionX, 0.65f, lastSpawnedRowPosition); // previous became next already
+
         }
         else if (whichObject == 1) // Bad
         {
             int itemIndex = Random.Range(0, badItems.Length);
             go = Instantiate(badItems[itemIndex]) as GameObject;
+
+            // Increase object size
+            go.transform.localScale *= 5.5f;
+
+            // Rotate Random
+            go.transform.eulerAngles = new Vector3(0, Random.Range(0, 180), 0);
+
+            // Added ItemRotateScript
+            go.AddComponent<ItemRotate>();
+            go.GetComponent<ItemRotate>().SetIsGood(false);
+
+            go.transform.SetParent(transform);
+            go.transform.position = new Vector3(spawnPositionX, 0.65f, lastSpawnedRowPosition); // previous became next already
+
         }
         else // Obstacle
         {
             int itemIndex = Random.Range(0, obstacles.Length);
             go = Instantiate(obstacles[itemIndex]) as GameObject;
+
+            go.transform.SetParent(transform);
+            go.transform.position = new Vector3(spawnPositionX, 0.1f, lastSpawnedRowPosition); // previous became next already
+
         }
 
-        go.transform.SetParent(transform);
-        go.transform.position = new Vector3(spawnPositionX, 0.65f, previousRowPosition); // previous became next already
 
-        // Increase object size
-        go.transform.localScale *= 5.5f;
-
-        // Added ItemRotateScript
-        go.AddComponent<ItemRotate>();
-        go.GetComponent<ItemRotate>().SetIsGood(true);
         go.AddComponent<BoxCollider>();
         go.GetComponent<BoxCollider>().isTrigger = true;
         go.AddComponent<AudioSource>();
-
-        // Rotate Random
-        go.transform.eulerAngles = new Vector3(0, Random.Range(0, 180), 0);
 
         activeItems.Add(go);
     }

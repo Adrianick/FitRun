@@ -52,6 +52,7 @@ public class MapGenerator : MonoBehaviour
         {
             SpawnTile();
             DeleteTile();
+            itemGenerator.SpawnNextTileRows();
         }
         if (playerTransform.position.z - oceanSpawnSafeZone > (oceanSpawnZ - oceanLength))
         {
@@ -101,8 +102,6 @@ public class MapGenerator : MonoBehaviour
         go.transform.position = Vector3.forward * spawnZ;
         spawnZ = spawnZ + tileLength;
         activeTiles.Add(go);
-
-        //itemGenerator.SpawnItems(tilePrefabs[prefabIndex].gameObject.name, go.transform.position);
     }
 
     private void DeleteTile()
@@ -137,4 +136,15 @@ public class MapGenerator : MonoBehaviour
 
         return randomIndex;
     }
+
+    public float AmountOfTiles()
+    {
+        return amountOfTilesOnScreen;
+    }
+    public float TileLength()
+    {
+        return tileLength;
+    }
+
+
 }
