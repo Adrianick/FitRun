@@ -34,7 +34,7 @@ public class DeathMenu : MonoBehaviour
     public void Restart()
     {
         Time.timeScale = 1;
-        SceneManager.LoadScene("WS8");
+        SceneManager.LoadScene("WS10");
         //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 

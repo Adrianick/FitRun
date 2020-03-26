@@ -90,6 +90,26 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 70da941d330bfbe479c02e7ba420f174, type: 2}
+    - target: {fileID: 6507568, guid: 51ded5b93fd32a44a80d6b79ae6b9c0b, type: 3}
+      propertyPath: m_Size.y
+      value: 0.6902226
+      objectReference: {fileID: 0}
+    - target: {fileID: 6507568, guid: 51ded5b93fd32a44a80d6b79ae6b9c0b, type: 3}
+      propertyPath: m_Size.z
+      value: 0.11256048
+      objectReference: {fileID: 0}
+    - target: {fileID: 6507568, guid: 51ded5b93fd32a44a80d6b79ae6b9c0b, type: 3}
+      propertyPath: m_Center.x
+      value: -0.000000049670536
+      objectReference: {fileID: 0}
+    - target: {fileID: 6507568, guid: 51ded5b93fd32a44a80d6b79ae6b9c0b, type: 3}
+      propertyPath: m_Center.y
+      value: 0.6251113
+      objectReference: {fileID: 0}
+    - target: {fileID: 6507568, guid: 51ded5b93fd32a44a80d6b79ae6b9c0b, type: 3}
+      propertyPath: m_Center.z
+      value: 0.07627179
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51ded5b93fd32a44a80d6b79ae6b9c0b, type: 3}
 --- !u!4 &7261970523916022009 stripped

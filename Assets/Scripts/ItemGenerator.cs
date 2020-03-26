@@ -13,17 +13,17 @@ public class ItemGenerator : MonoBehaviour
     public GameObject[] badItems;
     public GameObject[] obstacles;
 
-    public float distanceBetweenItems = 9f;
+    private float distanceBetweenItems = 9f;
+    private float distanceMultiplier = 0.4f;
 
-    public float lastSpawnedRowPosition = 10f;
-    public float distanceMultiplier = 0.4f;
-    public float safeDestroyZone = 2f;
-    public float mapTileLength;
-    public float endOfLastTile;
-    public float initialTilesTotalLength;
-    public float playerRunningSpeed;
+    private float lastSpawnedRowPosition = 30f;
+    private float safeDestroyZone = 3f;
+    private float mapTileLength;
+    private float endOfLastTile;
+    private float initialTilesTotalLength;
+    private float playerRunningSpeed;
 
-    public float sideLanesOffset = 1.6f;
+    private float sideLanesOffset = 1.6f;
 
     private List<GameObject> activeItems = new List<GameObject>();
 
@@ -53,7 +53,6 @@ public class ItemGenerator : MonoBehaviour
     {
         if (player.GetZPosition() > (activeItems[0].transform.position.z + safeDestroyZone))
         {
-            //SpawnRow();
             DeleteRow();
         }
     }
@@ -61,7 +60,6 @@ public class ItemGenerator : MonoBehaviour
     {
         for (int i = 0; i < activeItems.Count; i++)
         {
-            print(activeItems[i].gameObject.transform.position.z + "+" + playerRunningSpeed + "< " + player.GetZPosition());
             if (activeItems[i].gameObject.transform.position.z + playerRunningSpeed < player.GetZPosition())
             {
                 Destroy(activeItems[i]);
@@ -80,7 +78,6 @@ public class ItemGenerator : MonoBehaviour
     {
         endOfLastTile += mapTileLength;
         int numberOfRowsToSpawn = Mathf.FloorToInt((endOfLastTile - lastSpawnedRowPosition) / playerRunningSpeed);
-        print(numberOfRowsToSpawn);
         for (int i = 0; i < numberOfRowsToSpawn; i++)
         {
             SpawnRow();
@@ -90,8 +87,9 @@ public class ItemGenerator : MonoBehaviour
     {
         int numberOfObjectsToSpawn = DecideHowManyObjectsToSpawn();
         float nextSpawnRowPosition = CalculateNextSpawnRowPosition();
-        print("Spawn distance : " + (nextSpawnRowPosition - lastSpawnedRowPosition));
+        //print("Spawn distance : " + (nextSpawnRowPosition - lastSpawnedRowPosition));
         lastSpawnedRowPosition = nextSpawnRowPosition;
+
         if (numberOfObjectsToSpawn == 1)
         {
             SpawnOneObject();
@@ -129,8 +127,8 @@ public class ItemGenerator : MonoBehaviour
             distanceBetweenItems += distanceBetweenItems * distanceMultiplier;
             playerRunningSpeed = newPlayerRunningSpeed;
         }
-        return lastSpawnedRowPosition + playerRunningSpeed;
-        //return lastSpawnedRowPosition + distanceBetweenItems;
+        //return lastSpawnedRowPosition + playerRunningSpeed;
+        return lastSpawnedRowPosition + distanceBetweenItems;
     }
 
     public void SpawnOneObject()
@@ -295,7 +293,6 @@ public class ItemGenerator : MonoBehaviour
         }
 
         GameObject go;
-
         if (whichObject == 0) // Good
         {
             int itemIndex = Random.Range(0, goodItems.Length);
@@ -314,6 +311,8 @@ public class ItemGenerator : MonoBehaviour
             go.transform.SetParent(transform);
             go.transform.position = new Vector3(spawnPositionX, 0.65f, lastSpawnedRowPosition); // previous became next already
 
+            go.AddComponent<BoxCollider>();
+            go.GetComponent<BoxCollider>().isTrigger = true;
         }
         else if (whichObject == 1) // Bad
         {
@@ -333,6 +332,8 @@ public class ItemGenerator : MonoBehaviour
             go.transform.SetParent(transform);
             go.transform.position = new Vector3(spawnPositionX, 0.65f, lastSpawnedRowPosition); // previous became next already
 
+            go.AddComponent<BoxCollider>();
+            go.GetComponent<BoxCollider>().isTrigger = true;
         }
         else // Obstacle
         {
@@ -342,11 +343,17 @@ public class ItemGenerator : MonoBehaviour
             go.transform.SetParent(transform);
             go.transform.position = new Vector3(spawnPositionX, 0.1f, lastSpawnedRowPosition); // previous became next already
 
+            foreach (Transform child in go.transform)
+            {
+                child.gameObject.AddComponent<ObstacleManager>();
+                child.gameObject.GetComponent<BoxCollider>().isTrigger = true;
+            }
+
+            //go.AddComponent<ObstacleManager>();
         }
 
 
-        go.AddComponent<BoxCollider>();
-        go.GetComponent<BoxCollider>().isTrigger = true;
+
         go.AddComponent<AudioSource>();
 
         activeItems.Add(go);

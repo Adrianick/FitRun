@@ -10,7 +10,7 @@ public class PlayerMotor : MonoBehaviour
     private Vector3 targetVector;
 
 
-    private readonly float startingAnimationDuration = 0.5f;
+    private readonly float startingAnimationDuration = 2f;
 
     private float verticalVelocity = 0.0f;
     private float playerRunningSpeed = 9.0f;
@@ -44,6 +44,7 @@ public class PlayerMotor : MonoBehaviour
         startTime = Time.time;
         deathMenu = GameObject.FindGameObjectWithTag("UserInterface").GetComponentInChildren<DeathMenu>(true);
         soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
+
     }
 
     void FixedUpdate()
@@ -64,6 +65,14 @@ public class PlayerMotor : MonoBehaviour
     }
     void Update()
     {
+        if (Time.time - startTime < startingAnimationDuration)
+        {
+            //controller.Move(Vector3.up * verticalVelocity);
+            //controller.Move(Vector3.forward * playerRunningSpeed);
+            MovePlayerSmoothly();
+
+            return;
+        }
         if (Time.time - startedRollingTime > rollingAnimationDuration && isRolling)
         {
             //SetDefaultControllerCenter();
@@ -75,12 +84,7 @@ public class PlayerMotor : MonoBehaviour
             //jumpingDuration += 0.1f;
             JumpEnded();
         }
-        if (Time.time - startTime < startingAnimationDuration)
-        {
-            controller.Move(Vector3.up * verticalVelocity);
-            controller.Move(Vector3.forward * playerRunningSpeed);
-            return;
-        }
+
 
         if (this.animator.GetCurrentAnimatorStateInfo(0).fullPathHash == Animator.StringToHash("Base Layer.Running"))
         {
@@ -143,7 +147,6 @@ public class PlayerMotor : MonoBehaviour
                 animator.SetBool("WantsToRollFromJump", true);
             }
             verticalVelocity = jumpForceMultiplier;
-            print("isJumping");
         }
         else if (controller.isGrounded)
         {
@@ -155,7 +158,6 @@ public class PlayerMotor : MonoBehaviour
 
             }
             verticalVelocity = -0.5f;
-            //print("Grounded");
 
             animator.SetBool("Landing", false);
             animator.SetBool("Jump", false);
