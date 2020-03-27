@@ -3,21 +3,12 @@ using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
-    public class Cv
-    {
-        public GameObject gameObject;
-
-        [SerializeField]
-        public bool isD;
-    }
 
     public ItemGenerator itemGenerator;
-    public GameObject[] tilePrefabs;
-    //public Cv[] tilePrefabs;
-    public GameObject oceanPrefab;
-    public bool[] isGood;
-
     private Transform playerTransform;
+
+    public GameObject[] tilePrefabs;
+    public GameObject oceanPrefab;
 
     private List<GameObject> activeTiles = new List<GameObject>();
     private List<GameObject> activeOceans = new List<GameObject>();
@@ -30,6 +21,7 @@ public class MapGenerator : MonoBehaviour
     private float safeZone = 25.0f; // 1 tile - 10 ; 3 - 30
     private float oceanSpawnSafeZone = 550.0f;
     private float oceanDestroySafeZone = 50.0f; // 50 after the end of the ocean
+
     private int amountOfTilesOnScreen = 6;
     private int lastPrefabIndex = 0;
 
@@ -60,6 +52,7 @@ public class MapGenerator : MonoBehaviour
         {
             SpawnTile();
             DeleteTile();
+            itemGenerator.SpawnNextTileRows();
         }
         if (playerTransform.position.z - oceanSpawnSafeZone > (oceanSpawnZ - oceanLength))
         {
@@ -109,8 +102,6 @@ public class MapGenerator : MonoBehaviour
         go.transform.position = Vector3.forward * spawnZ;
         spawnZ = spawnZ + tileLength;
         activeTiles.Add(go);
-
-        itemGenerator.SpawnItems(tilePrefabs[prefabIndex].gameObject.name, go.transform.position);
     }
 
     private void DeleteTile()
@@ -145,4 +136,15 @@ public class MapGenerator : MonoBehaviour
 
         return randomIndex;
     }
+
+    public float AmountOfTiles()
+    {
+        return amountOfTilesOnScreen;
+    }
+    public float TileLength()
+    {
+        return tileLength;
+    }
+
+
 }

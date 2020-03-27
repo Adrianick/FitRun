@@ -1,9 +1,8 @@
-using System;
 using UnityEngine;
 
 namespace UnityStandardAssets.ImageEffects
 {
-    [RequireComponent(typeof (Camera))]
+    [RequireComponent(typeof(Camera))]
     [AddComponentMenu("")]
     public class ImageEffectBase : MonoBehaviour
     {
@@ -17,11 +16,11 @@ namespace UnityStandardAssets.ImageEffects
         protected virtual void Start()
         {
             // Disable if we don't support image effects
-            if (!SystemInfo.supportsImageEffects)
-            {
-                enabled = false;
-                return;
-            }
+            //if (!SystemInfo.supportsImageEffects)
+            //{
+            //    enabled = false;
+            //    return;
+            //}
 
             // Disable the image effect if the shader can't
             // run on the users graphics card

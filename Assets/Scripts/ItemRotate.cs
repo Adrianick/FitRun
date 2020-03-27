@@ -39,7 +39,7 @@ public class ItemRotate : MonoBehaviour
         }
         soundManager.PlaySound(this.isGood);
         this.gameObject.SetActive(false);
-        itemGenerator.DestroyInactiveItems();
+        //itemGenerator.DestroyInactiveItems();
     }
 
 
