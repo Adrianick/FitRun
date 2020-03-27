@@ -42,7 +42,7 @@ public class MenuButtonController : MonoBehaviour {
 
 	void Play()
     {
-		SceneManager.LoadScene("WS10");
+		SceneManager.LoadSceneAsync("WS11");
 	}
 
 
