@@ -104,7 +104,7 @@ public class MapGenerator : MonoBehaviour
 
                 if (go.gameObject.name.Equals("Island(Clone)"))
                 {   
-                    go.transform.position = new Vector3(Random.Range(-100, -50), 0.5f, oceanSpawnZ + (50 * i));
+                    go.transform.position = new Vector3(Random.Range(-100, -70), 0.5f, oceanSpawnZ + (50 * i));
                 }
                 else
                 {
@@ -128,7 +128,7 @@ public class MapGenerator : MonoBehaviour
                 if (go.gameObject.name.Equals("Island(Clone)"))
                 {
                     Debug.Log("Insula");
-                    go.transform.position = new Vector3(Random.Range(50, 100), 0.5f, oceanSpawnZ + (50 * i));
+                    go.transform.position = new Vector3(Random.Range(50, 51), 0.5f, oceanSpawnZ + (50 * i));
                 }
                 else
                 {
