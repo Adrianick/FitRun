@@ -14,7 +14,6 @@ public class MenuButtonController : MonoBehaviour {
 		Debug.Log("Application ending after " + Time.time + " seconds");
 		//index = 0;
 		audioSource = GetComponent<AudioSource>();
-		Debug.Log(maxIndex);
 
 	}
 

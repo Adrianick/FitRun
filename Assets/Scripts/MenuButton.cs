@@ -22,12 +22,7 @@ public class MenuButton : MonoBehaviour
 	// Update is called once per frame
 	void Update()
     {
-		Debug.Log("Ioana");
-		//Debug.Log(thisIndex);
-		Debug.Log(menuButtonController.index);
-
-
-
+	
 		if (menuButtonController.index == thisIndex)
 		{
 			animator.SetBool ("selected", true);
