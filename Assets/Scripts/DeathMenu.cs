@@ -8,7 +8,8 @@ public class DeathMenu : MonoBehaviour
     private SoundManager soundManager;
     void Start()
     {
-        gameObject.SetActive(false);
+        Debug.Log("Application ending after " + Time.time + " seconds");
+        gameObject.SetActive(true);
         soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
     }
 
@@ -28,15 +29,17 @@ public class DeathMenu : MonoBehaviour
     public void ToggleEndMenu(float score)
     {
         gameObject.SetActive(true);
-
     }
 
     public void Restart()
     {
         Time.timeScale = 1;
-        SceneManager.LoadScene("WS10");
+        SceneManager.LoadScene("WS11");
         //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+  
+
 
     public void ToMenu()
     {

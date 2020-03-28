@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMotor : MonoBehaviour
 {
@@ -42,7 +43,6 @@ public class PlayerMotor : MonoBehaviour
         animator = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
         startTime = Time.time;
-        deathMenu = GameObject.FindGameObjectWithTag("UserInterface").GetComponentInChildren<DeathMenu>(true);
         soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
 
     }
@@ -337,9 +337,12 @@ public class PlayerMotor : MonoBehaviour
     public void Lost()
     {
         //soundManager.PlaySound(false);
+        SceneManager.LoadScene("RestartMenu");
+        //deathMenu = GameObject.FindGameObjectWithTag("UserInterface").GetComponentInChildren<DeathMenu>(true);
+
         this.enabled = false;
         Time.timeScale = 0;
-        deathMenu.GameOver();
+        //deathMenu.GameOver();
     }
     public void UpdateRunningSpeed()
     {
