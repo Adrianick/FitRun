@@ -39,4 +39,20 @@ public class SoundManager : MonoBehaviour
 
 
     }
+
+    public void OffSound()
+    {
+        AudioListener.volume = 0;
+
+    }
+
+    public void OnSound()
+    {
+        AudioListener.volume = 1.0f;
+    }
+
+    /*public void ToggleSound()
+    {
+        AudioListener.volume = 1 - AudioListener.volume;
+    }*/
 }
