@@ -825,6 +825,11 @@ PrefabInstance:
       propertyPath: m_Text
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1379621832709807162, guid: 7fe3cfe086b8cf34783b61b4a7f89156,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 1379621833087640303, guid: 7fe3cfe086b8cf34783b61b4a7f89156,
         type: 3}
       propertyPath: m_SizeDelta.x
@@ -835,7 +840,8 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1379621832709807166, guid: 7fe3cfe086b8cf34783b61b4a7f89156, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7fe3cfe086b8cf34783b61b4a7f89156, type: 3}
 --- !u!1001 &2674261291196007058
 PrefabInstance:

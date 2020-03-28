@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class MenuButtonController : MonoBehaviour {
 
@@ -11,7 +10,7 @@ public class MenuButtonController : MonoBehaviour {
 	[SerializeField] int maxIndex;
 	public AudioSource audioSource;
 	
-	void Start () {
+	void Start () { 
 		audioSource = GetComponent<AudioSource>();
 	}
 	
@@ -35,15 +34,12 @@ public class MenuButtonController : MonoBehaviour {
 				keyDown = true;
 			}
 		}else{
-			Play();
+	
 			keyDown = false;
 		}
 	}
 
-	void Play()
-    {
-		SceneManager.LoadSceneAsync("WS11");
-	}
+	
 
 
 

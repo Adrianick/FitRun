@@ -28,7 +28,6 @@ public class DeathMenu : MonoBehaviour
     public void ToggleEndMenu(float score)
     {
         gameObject.SetActive(true);
-
     }
 
     public void Restart()

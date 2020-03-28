@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SoundManager : MonoBehaviour
 {
@@ -23,7 +24,10 @@ public class SoundManager : MonoBehaviour
         AudioSource music = gameObject.GetComponent<AudioSource>();
         music.clip = menuMusic;
         music.Play();
+       // SceneManager.LoadSceneAsync("RestartMenu");
+
     }
+
 
     public void PlaySound(bool isGood)
     {
@@ -39,4 +43,21 @@ public class SoundManager : MonoBehaviour
 
 
     }
+
+    public void OffSound()
+    {
+        AudioListener.volume = 0;
+      
+    }
+
+    public void OnSound()
+    {
+        AudioListener.volume = 1.0f;
+    }
+
+    /*public void ToggleSound()
+    {
+        AudioListener.volume = 1 - AudioListener.volume;
+    }*/
+
 }
