@@ -8,7 +8,8 @@ public class DeathMenu : MonoBehaviour
     private SoundManager soundManager;
     void Start()
     {
-        gameObject.SetActive(false);
+        Debug.Log("Application ending after " + Time.time + " seconds");
+        gameObject.SetActive(true);
         soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
     }
 

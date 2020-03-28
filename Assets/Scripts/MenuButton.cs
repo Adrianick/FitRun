@@ -14,6 +14,7 @@ public class MenuButton : MonoBehaviour
 
 	void Start()
 	{
+		Debug.Log("Application ending after " + Time.time + " seconds");
 		scene = SceneManager.GetActiveScene();
 		soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
 	}
@@ -21,7 +22,13 @@ public class MenuButton : MonoBehaviour
 	// Update is called once per frame
 	void Update()
     {
-		if(menuButtonController.index == thisIndex)
+		Debug.Log("Ioana");
+		//Debug.Log(thisIndex);
+		Debug.Log(menuButtonController.index);
+
+
+
+		if (menuButtonController.index == thisIndex)
 		{
 			animator.SetBool ("selected", true);
 			if(Input.GetAxis ("Submit") == 1)
@@ -36,8 +43,15 @@ public class MenuButton : MonoBehaviour
 				}
 				else if (thisIndex == 2)
                 {
-					SoundOff();
-                }
+					if (scene.name == "RestartMenu")
+                    {
+						Quit();
+                    } 
+					else
+                    {
+						SoundOff();
+					}
+				}
 				animator.SetBool ("pressed", true);
 			}
 			else if (animator.GetBool ("pressed"))
@@ -67,5 +81,11 @@ public class MenuButton : MonoBehaviour
     {
 		soundManager.OnSound();
     }
+
+	void Quit()
+    {
+		Debug.Log("You pressed the quit button");
+		Application.Quit();
+	}
 
 }

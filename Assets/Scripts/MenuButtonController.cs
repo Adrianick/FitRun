@@ -10,13 +10,17 @@ public class MenuButtonController : MonoBehaviour {
 	[SerializeField] int maxIndex;
 	public AudioSource audioSource;
 	
-	void Start () { 
+	void Start () {
+		Debug.Log("Application ending after " + Time.time + " seconds");
+		//index = 0;
 		audioSource = GetComponent<AudioSource>();
+		Debug.Log(maxIndex);
+
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetAxis ("Vertical") != 0){
+		if (Input.GetAxis ("Vertical") != 0){
 			if(!keyDown){
 				if (Input.GetAxis ("Vertical") < 0) {
 					if(index < maxIndex){

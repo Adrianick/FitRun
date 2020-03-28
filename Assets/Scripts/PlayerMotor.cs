@@ -338,7 +338,8 @@ public class PlayerMotor : MonoBehaviour
     {
         //soundManager.PlaySound(false);
         SceneManager.LoadScene("RestartMenu");
-        deathMenu = GameObject.FindGameObjectWithTag("UserInterface").GetComponentInChildren<DeathMenu>(true);
+        //deathMenu = GameObject.FindGameObjectWithTag("UserInterface").GetComponentInChildren<DeathMenu>(true);
+
         this.enabled = false;
         Time.timeScale = 0;
         //deathMenu.GameOver();
