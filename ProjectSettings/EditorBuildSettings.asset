@@ -14,4 +14,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/WS10.unity
     guid: ceadcd2010a747e4a90f30369dd26b70
+  - enabled: 1
+    path: Assets/RestartMenu.unity
+    guid: ff3f7d9211a20de4cac8b1def8b44f48
+  - enabled: 1
+    path: Assets/WS12.unity
+    guid: be0524c12d91da2409acab8c4f7a6257
+  - enabled: 1
+    path: Assets/MainMenu.unity
+    guid: 8aff7fc09b591c14c88e40f0070a54ec
   m_configObjects: {}

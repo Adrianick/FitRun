@@ -33,24 +33,29 @@ public class MenuButton : MonoBehaviour
 				}
 				else if (thisIndex == 1)
 				{
-					SoundOn();
+					if (scene.name == "RestartMenu")
+					{
+						BackToMenu();
+					} 
+					else {
+						SoundOn();
+
+					}
 				}
 				else if (thisIndex == 2)
 				{
-					if (scene.name == "RestartMenu")
-					{
-						Quit();
-					}
-					else
-					{
-						SoundOff();
-					}
+					SoundOff();
+					
 				}
+				else if (thisIndex == 3)
+                {
+					Quit();
+                }
 				animator.SetBool("pressed", true);
 			}
 			else if (animator.GetBool ("pressed")){
 				animator.SetBool ("pressed", false);
-				animatorFunctions.disableOnce = true;
+				//animatorFunctions.disableOnce = true;
 			}
 		}else{
 			animator.SetBool ("selected", false);
@@ -77,5 +82,10 @@ public class MenuButton : MonoBehaviour
 	{
 		Debug.Log("You pressed the quit button");
 		Application.Quit();
+	}
+
+	void BackToMenu()
+    {
+		SceneManager.LoadSceneAsync("MainMenu");
 	}
 }

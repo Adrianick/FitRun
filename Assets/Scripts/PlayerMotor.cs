@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMotor : MonoBehaviour
 {
@@ -43,6 +44,7 @@ public class PlayerMotor : MonoBehaviour
         controller = GetComponent<CharacterController>();
         startTime = Time.time;
         deathMenu = GameObject.FindGameObjectWithTag("UserInterface").GetComponentInChildren<DeathMenu>(true);
+        //deathMenu = GameObject.FindGameObjectWithTag("DeathMenu").GetComponent<DeathMenu>();
         soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
 
     }
@@ -338,8 +340,10 @@ public class PlayerMotor : MonoBehaviour
     {
         //soundManager.PlaySound(false);
         this.enabled = false;
-        Time.timeScale = 0;
-        deathMenu.GameOver();
+        Time.timeScale = 1;
+        SceneManager.UnloadSceneAsync("WS10");
+        SceneManager.LoadSceneAsync("RestartMenu");
+        //deathMenu.GameOver();
     }
     public void UpdateRunningSpeed()
     {
