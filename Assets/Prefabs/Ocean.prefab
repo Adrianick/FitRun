@@ -106,12 +106,12 @@ PrefabInstance:
     - target: {fileID: 3801186818583466782, guid: b5dbfc49d48394b40b4d8ba8fe06a3a0,
         type: 3}
       propertyPath: waveHeight
-      value: 1.4
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 3801186818583466782, guid: b5dbfc49d48394b40b4d8ba8fe06a3a0,
         type: 3}
       propertyPath: waveFrequency
-      value: 0.2
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 3801186818583466783, guid: b5dbfc49d48394b40b4d8ba8fe06a3a0,
         type: 3}

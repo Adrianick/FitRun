@@ -424,6 +424,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8815049178323463791, guid: 856e0f8580464fb4195f2ab87beabb1d,
         type: 3}
+      propertyPath: backgroundPrefabs.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8815049178323463791, guid: 856e0f8580464fb4195f2ab87beabb1d,
+        type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
@@ -474,6 +479,24 @@ PrefabInstance:
       propertyPath: oceanPrefab
       value: 
       objectReference: {fileID: 1010992996327129863, guid: 267cc01314761694da7ba3d82ad110e7,
+        type: 3}
+    - target: {fileID: 8815049178323463791, guid: 856e0f8580464fb4195f2ab87beabb1d,
+        type: 3}
+      propertyPath: backgroundPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 7608047718491297323, guid: 31ac058c493986940b3af7f57e11fa6b,
+        type: 3}
+    - target: {fileID: 8815049178323463791, guid: 856e0f8580464fb4195f2ab87beabb1d,
+        type: 3}
+      propertyPath: backgroundPrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 1047933523935693302, guid: 6ffb1cb192aad9843ba1fa2aebd88a3e,
+        type: 3}
+    - target: {fileID: 8815049178323463791, guid: 856e0f8580464fb4195f2ab87beabb1d,
+        type: 3}
+      propertyPath: backgroundPrefabs.Array.data[2]
+      value: 
+      objectReference: {fileID: 5871910128160208276, guid: be994a941b19c3a4e8412bf564d242a0,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 856e0f8580464fb4195f2ab87beabb1d, type: 3}
