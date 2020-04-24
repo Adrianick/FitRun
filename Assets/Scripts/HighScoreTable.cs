@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public class HighScoreTable : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class HighScoreTable : MonoBehaviour
     private List<HighScoreEntry> highScoresEntryList;
     private List<Transform> highScoreEntryTransformList;
     [SerializeField] private HighScores _HighScores;
+    private string _resultsFilePath;
+
 
     private void Awake()
     {
@@ -18,7 +21,8 @@ public class HighScoreTable : MonoBehaviour
         entryTemplate = entryContainer.Find("HighScoreEntryTemplate");
 
         entryTemplate.gameObject.SetActive(false);
-         
+
+       
         highScoresEntryList = new List<HighScoreEntry>()
         {
             new HighScoreEntry{ score = 34566, name = "AAA"},
@@ -59,10 +63,14 @@ public class HighScoreTable : MonoBehaviour
         Debug.Log(potion);
 
         System.IO.File.WriteAllText(Application.persistentDataPath + "/TableData.json", potion);
-        if (System.IO.File.Exists("TableData.json"))
-        {
-            Debug.Log(potion);
-        }
+        var elem = System.IO.File.ReadAllText(Application.persistentDataPath + "/TableData.json");
+        var exista = System.IO.File.Exists(Application.persistentDataPath + "/TableData.json");
+        Debug.Log(elem);
+        Debug.Log(exista);
+
+
+
+       
         string json = JsonUtility.ToJson(highScores);
 
         PlayerPrefs.SetString("highScoreTable", json);
