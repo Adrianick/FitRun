@@ -41,9 +41,14 @@ public class HighScoreTable : MonoBehaviour
 
             }
             highScoreEntryTransformList = new List<Transform>();
+            var index = 0;
             foreach (HighScoreEntry highScoreEntry in highScores.highScoresEntryList)
             {
-                CreateHighScoresEntryTemplate(highScoreEntry, entryContainer, highScoreEntryTransformList);
+                index += 1;
+                if (index <= 10)
+                {
+                    CreateHighScoresEntryTemplate(highScoreEntry, entryContainer, highScoreEntryTransformList);
+                }
             }
 
 
@@ -104,8 +109,8 @@ public class HighScoreTable : MonoBehaviour
         int score = highScoreEntry.score;
         entryTransform.Find("scoreText").GetComponent<Text>().text = score.ToString();
 
-        string name = highScoreEntry.name;
-        entryTransform.Find("nameText").GetComponent<Text>().text = name;
+        //string name = highScoreEntry.name;
+        entryTransform.Find("nameText").GetComponent<Text>().text = "Player" + rank;
 
         //Set background visible odds and evens
         entryTransform.Find("Background").gameObject.SetActive(rank % 2 == 1);

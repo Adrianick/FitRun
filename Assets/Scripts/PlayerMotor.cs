@@ -1,5 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using System.IO;
 
 public class PlayerMotor : MonoBehaviour
 {
@@ -37,6 +42,9 @@ public class PlayerMotor : MonoBehaviour
 
     private int currentLane = 1;
     private float startTime;
+
+    [SerializeField] private HighScores _HighScores;
+
 
     void Start()
     {
@@ -341,8 +349,10 @@ public class PlayerMotor : MonoBehaviour
         //soundManager.PlaySound(false);
         this.enabled = false;
         Time.timeScale = 1;
+
         SceneManager.UnloadSceneAsync("WS10");
         SceneManager.LoadSceneAsync("RestartMenu");
+        AddHighScoreEntry(10000, "Ioana");
         //deathMenu.GameOver();
     }
     public void UpdateRunningSpeed()
@@ -356,5 +366,40 @@ public class PlayerMotor : MonoBehaviour
     public float GetRunningSpeed()
     {
         return playerRunningSpeed;
+    }
+
+    private void AddHighScoreEntry(int score, string name)
+    {
+        //Create HighScoreEntry
+        HighScoreEntry highScoreEntry = new HighScoreEntry { score = score, name = name };
+
+        //Load saved HighScores
+        string jsonString = System.IO.File.ReadAllText(Application.persistentDataPath + "/TableData.json");
+        HighScores highScores = JsonUtility.FromJson<HighScores>(jsonString);
+
+        //Add new entry
+        highScores.highScoresEntryList.Add(highScoreEntry);
+
+
+        _HighScores = new HighScores { highScoresEntryList = highScores.highScoresEntryList };
+
+        string list = JsonUtility.ToJson(_HighScores);
+        Debug.Log(list);
+
+        System.IO.File.WriteAllText(Application.persistentDataPath + "/TableData.json", list);
+
+    }
+
+    [System.Serializable]
+    private class HighScores
+    {
+        public List<HighScoreEntry> highScoresEntryList;
+    }
+
+    [System.Serializable]
+    private class HighScoreEntry
+    {
+        public int score;
+        public string name;
     }
 }
