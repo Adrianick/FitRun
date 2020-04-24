@@ -31,6 +31,20 @@ public class HighScoreTable : MonoBehaviour
             new HighScoreEntry{ score = 234, name = "BAB"}
         };
 
+        for (int i = 0; i < highScoresEntryList.Count; i++)
+        {
+            for (int j = i + 1; j < highScoresEntryList.Count; j++)
+            {
+                if (highScoresEntryList[j].score > highScoresEntryList[i].score)
+                {
+                    HighScoreEntry temp = highScoresEntryList[i];
+                    highScoresEntryList[i] = highScoresEntryList[j];
+                    highScoresEntryList[j] = temp;
+                }
+            }
+
+        }
+
         highScoreEntryTransformList = new List<Transform>();
         foreach (HighScoreEntry highScoreEntry in highScoresEntryList)
         {
