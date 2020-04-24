@@ -116,6 +116,22 @@ public class HighScoreTable : MonoBehaviour
             entryTransform.Find("scoreText").GetComponent<Text>().color = Color.green;
             entryTransform.Find("nameText").GetComponent<Text>().color = Color.green;
         }
+
+        switch (rank)
+        {
+            default:
+                entryTransform.Find("troph").gameObject.SetActive(false);
+                break;
+            case 1:
+                entryTransform.Find("troph").GetComponent<Image>().color = Color.yellow;
+                break;
+            case 2:
+                entryTransform.Find("troph").GetComponent<Image>().color = Color.gray;
+                break;
+            case 3:
+                entryTransform.Find("troph").GetComponent<Image>().color = Color.red;
+                break;
+        }
         transformList.Add(entryTransform);
     }
 
