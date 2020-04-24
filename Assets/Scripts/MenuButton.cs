@@ -44,8 +44,16 @@ public class MenuButton : MonoBehaviour
 				}
 				else if (thisIndex == 2)
 				{
-					SoundOff();
-					
+					if (scene.name == "RestartMenu")
+					{
+						GoToHighScoreTable();
+					}
+					else
+					{
+						SoundOff();
+
+					}
+
 				}
 				else if (thisIndex == 3)
                 {
@@ -61,6 +69,12 @@ public class MenuButton : MonoBehaviour
 			animator.SetBool ("selected", false);
 		}
     }
+
+	void GoToHighScoreTable()
+    {
+		SceneManager.LoadSceneAsync("HighScore");
+
+	}
 
 	void Play()
 	{
