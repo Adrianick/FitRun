@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class HighScoreTable : MonoBehaviour
 {
     private Transform entryContainer;
     private Transform entryTemplate;
+    private List<HighScoreEntry> highScoresEntryList;
+    private List<Transform> highScoreEntryTransformList;
+
     private void Awake()
     {
         entryContainer = transform.Find("HighScoreEntryContainer");
@@ -13,39 +17,67 @@ public class HighScoreTable : MonoBehaviour
 
         entryTemplate.gameObject.SetActive(false);
 
-        float templateHeight = 30f;
-        for (int i = 0; i < 10; i++)
+        highScoresEntryList = new List<HighScoreEntry>()
         {
+            new HighScoreEntry{ score = 34566, name = "AAA"},
+            new HighScoreEntry{ score = 1223, name = "POPA"},
+            new HighScoreEntry{ score = 122345, name = "ASM"},
+            new HighScoreEntry{ score = 123, name = "PAL"},
+            new HighScoreEntry{ score = 2345, name = "ASN"},
+            new HighScoreEntry{ score = 124, name = "AAA"},
+            new HighScoreEntry{ score = 34566, name = "ALAS"},
+            new HighScoreEntry{ score = 2345, name = "AMS"},
+            new HighScoreEntry{ score = 3451266, name = "ASD"},
+            new HighScoreEntry{ score = 234, name = "BAB"}
+        };
 
-            Transform entryTransform = Instantiate(entryTemplate, entryContainer);
-            RectTransform entryRectTransform = entryTransform.GetComponent<RectTransform>();
-            entryRectTransform.anchoredPosition = new Vector2(0, -templateHeight * i);
-            entryTransform.gameObject.SetActive(true);
-
-           int rank = i + 1;
-            string rankString;
-            switch (rank)
-            {
-                default:
-                    rankString = rank + "TH"; break;
-                case 1:
-                    rankString = "1ST"; break;
-                case 2:
-                    rankString = "2ND"; break;
-                case 3:
-                    rankString = "3RD"; break;
-            }
-
-            entryTransform.Find("posText").GetComponent<Text>().text = rankString;
-
-            int score = Random.Range(0, 10000);
-            entryTransform.Find("scoreText").GetComponent<Text>().text = score.ToString();
-
-            string name = "AAA";
-            entryTransform.Find("nameText").GetComponent<Text>().text = name;
-
-
+        highScoreEntryTransformList = new List<Transform>();
+        foreach (HighScoreEntry highScoreEntry in highScoresEntryList)
+        {
+            CreateHighScoresEntryTemplate(highScoreEntry, entryContainer, highScoreEntryTransformList);
         }
 
+       
+
     }
+
+    private void  CreateHighScoresEntryTemplate(HighScoreEntry highScoreEntry, Transform container, List<Transform> transformList)
+    {
+        float templateHeight = 30f;
+        Transform entryTransform = Instantiate(entryTemplate, container);
+        RectTransform entryRectTransform = entryTransform.GetComponent<RectTransform>();
+        entryRectTransform.anchoredPosition = new Vector2(0, -templateHeight * transformList.Count);
+        entryTransform.gameObject.SetActive(true);
+
+        int rank = transformList.Count + 1;
+        string rankString;
+        switch (rank)
+        {
+            default:
+                rankString = rank + "TH"; break;
+            case 1:
+                rankString = "1ST"; break;
+            case 2:
+                rankString = "2ND"; break;
+            case 3:
+                rankString = "3RD"; break;
+        }
+
+        entryTransform.Find("posText").GetComponent<Text>().text = rankString;
+
+        int score = highScoreEntry.score;
+        entryTransform.Find("scoreText").GetComponent<Text>().text = score.ToString();
+
+        string name = highScoreEntry.name;
+        entryTransform.Find("nameText").GetComponent<Text>().text = name;
+
+        transformList.Add(entryTransform);
+    }
+
+
+    private class HighScoreEntry {
+        public int score;
+        public string name;
+    }
+   
 }
