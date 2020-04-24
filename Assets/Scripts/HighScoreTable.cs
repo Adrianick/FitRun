@@ -6,13 +6,10 @@ using System.IO;
 
 public class HighScoreTable : MonoBehaviour
 {
-    private const string ResultsFile = "TableData.json";
     private Transform entryContainer;
     private Transform entryTemplate;
-    private List<HighScoreEntry> highScoresEntryList;
     private List<Transform> highScoreEntryTransformList;
     [SerializeField] private HighScores _HighScores;
-    private string _resultsFilePath;
 
 
     private void Awake()
@@ -22,43 +19,41 @@ public class HighScoreTable : MonoBehaviour
 
         entryTemplate.gameObject.SetActive(false);
 
-       
-        highScoresEntryList = new List<HighScoreEntry>()
-        {
-            new HighScoreEntry{ score = 34566, name = "AAA"},
-            new HighScoreEntry{ score = 1223, name = "POPA"},
-            new HighScoreEntry{ score = 122345, name = "ASM"},
-            new HighScoreEntry{ score = 123, name = "PAL"},
-            new HighScoreEntry{ score = 2345, name = "ASN"},
-            new HighScoreEntry{ score = 124, name = "AAA"},
-            new HighScoreEntry{ score = 34566, name = "ALAS"},
-            new HighScoreEntry{ score = 2345, name = "AMS"},
-            new HighScoreEntry{ score = 3451266, name = "ASD"},
-            new HighScoreEntry{ score = 234, name = "BAB"}
-        };
+        //AddHighScoreEntry(1000, "DAS");
 
-        for (int i = 0; i < highScoresEntryList.Count; i++)
+        if (System.IO.File.Exists(Application.persistentDataPath + "/TableData.json"))
         {
-            for (int j = i + 1; j < highScoresEntryList.Count; j++)
+            string jsonString = System.IO.File.ReadAllText(Application.persistentDataPath + "/TableData.json");
+            HighScores highScores = JsonUtility.FromJson<HighScores>(jsonString);
+
+            Debug.Log(highScores);
+            for (int i = 0; i < highScores.highScoresEntryList.Count; i++)
             {
-                if (highScoresEntryList[j].score > highScoresEntryList[i].score)
+                for (int j = i + 1; j < highScores.highScoresEntryList.Count; j++)
                 {
-                    HighScoreEntry temp = highScoresEntryList[i];
-                    highScoresEntryList[i] = highScoresEntryList[j];
-                    highScoresEntryList[j] = temp;
+                    if (highScores.highScoresEntryList[j].score > highScores.highScoresEntryList[i].score)
+                    {
+                        HighScoreEntry temp = highScores.highScoresEntryList[i];
+                        highScores.highScoresEntryList[i] = highScores.highScoresEntryList[j];
+                        highScores.highScoresEntryList[j] = temp;
+                    }
                 }
+
+            }
+            highScoreEntryTransformList = new List<Transform>();
+            foreach (HighScoreEntry highScoreEntry in highScores.highScoresEntryList)
+            {
+                CreateHighScoresEntryTemplate(highScoreEntry, entryContainer, highScoreEntryTransformList);
             }
 
+
         }
 
-        highScoreEntryTransformList = new List<Transform>();
-        foreach (HighScoreEntry highScoreEntry in highScoresEntryList)
-        {
-            CreateHighScoresEntryTemplate(highScoreEntry, entryContainer, highScoreEntryTransformList);
-        }
+      
 
-        HighScores highScores = new HighScores { highScoresEntryList = highScoresEntryList };
+        /*HighScores highScores = new HighScores { highScoresEntryList = highScoresEntryList };
         _HighScores = new HighScores { highScoresEntryList = highScoresEntryList };
+        
         string potion = JsonUtility.ToJson(_HighScores);
         Debug.Log(potion);
 
@@ -75,7 +70,7 @@ public class HighScoreTable : MonoBehaviour
 
         PlayerPrefs.SetString("highScoreTable", json);
         PlayerPrefs.Save();
-        Debug.Log(PlayerPrefs.GetString("highScoreTable"));
+        Debug.Log(PlayerPrefs.GetString("highScoreTable"));*/
 
 
        
@@ -112,7 +107,38 @@ public class HighScoreTable : MonoBehaviour
         string name = highScoreEntry.name;
         entryTransform.Find("nameText").GetComponent<Text>().text = name;
 
+        //Set background visible odds and evens
+        entryTransform.Find("Background").gameObject.SetActive(rank % 2 == 1);
+        
+        if (rank == 1)
+        {
+            entryTransform.Find("posText").GetComponent<Text>().color = Color.green;
+            entryTransform.Find("scoreText").GetComponent<Text>().color = Color.green;
+            entryTransform.Find("nameText").GetComponent<Text>().color = Color.green;
+        }
         transformList.Add(entryTransform);
+    }
+
+    private void AddHighScoreEntry(int score, string name)
+    {
+        //Create HighScoreEntry
+        HighScoreEntry highScoreEntry = new HighScoreEntry { score = score, name = name };
+
+        //Load saved HighScores
+        string jsonString = System.IO.File.ReadAllText(Application.persistentDataPath + "/TableData.json");
+        HighScores highScores = JsonUtility.FromJson<HighScores>(jsonString);
+
+        //Add new entry
+        highScores.highScoresEntryList.Add(highScoreEntry);
+
+
+        _HighScores = new HighScores { highScoresEntryList = highScores.highScoresEntryList };
+
+        string list = JsonUtility.ToJson(_HighScores);
+        Debug.Log(list);
+
+        System.IO.File.WriteAllText(Application.persistentDataPath + "/TableData.json", list);
+
     }
 
     [System.Serializable]
