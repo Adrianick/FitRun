@@ -51,6 +51,14 @@ public class HighScoreTable : MonoBehaviour
             CreateHighScoresEntryTemplate(highScoreEntry, entryContainer, highScoreEntryTransformList);
         }
 
+        HighScores highScores = new HighScores { highScoresEntryList = highScoresEntryList };
+        string json = JsonUtility.ToJson(highScores);
+
+        PlayerPrefs.SetString("highScoreTable", json);
+        PlayerPrefs.Save();
+        Debug.Log(PlayerPrefs.GetString("highScoreTable"));
+
+
        
 
     }
@@ -88,7 +96,12 @@ public class HighScoreTable : MonoBehaviour
         transformList.Add(entryTransform);
     }
 
+    private class HighScores
+    {
+        public List<HighScoreEntry> highScoresEntryList;
+    }
 
+    [System.Serializable]
     private class HighScoreEntry {
         public int score;
         public string name;
