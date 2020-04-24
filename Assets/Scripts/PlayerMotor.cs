@@ -8,6 +8,8 @@ using System.IO;
 
 public class PlayerMotor : MonoBehaviour
 {
+    private GameManager gameManager;
+
     private CharacterController controller;
     public Animator animator;
     private DeathMenu deathMenu;
@@ -44,6 +46,7 @@ public class PlayerMotor : MonoBehaviour
     private float startTime;
 
     [SerializeField] private HighScores _HighScores;
+    private List<HighScoreEntry> highScoreEntryList;
 
 
     void Start()
@@ -54,6 +57,8 @@ public class PlayerMotor : MonoBehaviour
         deathMenu = GameObject.FindGameObjectWithTag("UserInterface").GetComponentInChildren<DeathMenu>(true);
         //deathMenu = GameObject.FindGameObjectWithTag("DeathMenu").GetComponent<DeathMenu>();
         soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
+        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+
 
     }
 
@@ -349,10 +354,12 @@ public class PlayerMotor : MonoBehaviour
         //soundManager.PlaySound(false);
         this.enabled = false;
         Time.timeScale = 1;
+        Debug.Log(gameManager.highScore);
+        AddHighScoreEntry(gameManager.highScore, "Player");
 
         SceneManager.UnloadSceneAsync("WS10");
         SceneManager.LoadSceneAsync("RestartMenu");
-        AddHighScoreEntry(10000, "Ioana");
+   
         //deathMenu.GameOver();
     }
     public void UpdateRunningSpeed()
@@ -373,20 +380,41 @@ public class PlayerMotor : MonoBehaviour
         //Create HighScoreEntry
         HighScoreEntry highScoreEntry = new HighScoreEntry { score = score, name = name };
 
-        //Load saved HighScores
-        string jsonString = System.IO.File.ReadAllText(Application.persistentDataPath + "/TableData.json");
-        HighScores highScores = JsonUtility.FromJson<HighScores>(jsonString);
+        var exista = System.IO.File.Exists(Application.persistentDataPath + "/TableData.json");
+        Debug.Log(exista);
 
-        //Add new entry
-        highScores.highScoresEntryList.Add(highScoreEntry);
+        if (!System.IO.File.Exists(Application.persistentDataPath + "/TableData.json"))
+        {
+
+            highScoreEntryList = new List<HighScoreEntry>()
+            {
+                new HighScoreEntry{ score = score, name = name}
+            };
+
+            _HighScores = new HighScores { highScoresEntryList = highScoreEntryList };
+
+            string potion = JsonUtility.ToJson(_HighScores);
+
+            System.IO.File.WriteAllText(Application.persistentDataPath + "/TableData.json", potion);
+
+        } else
+        {
+            //Load saved HighScores
+            string jsonString = System.IO.File.ReadAllText(Application.persistentDataPath + "/TableData.json");
+            HighScores highScores = JsonUtility.FromJson<HighScores>(jsonString);
+
+            //Add new entry
+            highScores.highScoresEntryList.Add(highScoreEntry);
 
 
-        _HighScores = new HighScores { highScoresEntryList = highScores.highScoresEntryList };
+            _HighScores = new HighScores { highScoresEntryList = highScores.highScoresEntryList };
 
-        string list = JsonUtility.ToJson(_HighScores);
-        Debug.Log(list);
+            string list = JsonUtility.ToJson(_HighScores);
+            Debug.Log(list);
 
-        System.IO.File.WriteAllText(Application.persistentDataPath + "/TableData.json", list);
+            System.IO.File.WriteAllText(Application.persistentDataPath + "/TableData.json", list);
+        }
+
 
     }
 

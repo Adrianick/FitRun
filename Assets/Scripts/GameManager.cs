@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     public PlayerMotor player;
     public Text scoreText;
 
-    private int highScore = 0;
+    public int highScore = 0;
 
     public int startSpeedUp;
     public int endSpeedUp;
