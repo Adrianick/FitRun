@@ -29,3 +29,13 @@ Tema jocului
 	Alte elemente importante
    Au fost sustinute meeting-uri scurte in fiecare saptamana cu toti membrii echipei, meeting-uri in care fiecare membru arata tot ce a implementat pana in prezent si dificultati de care s-a lovit sau inca le mai are. La sfarsitul meeting-ului decideam impreuna care dintre noile implementari vor fi adaugate in proiectul principal (branch-ul master de pe Git al proiectului) si care are nevoie de schimbari.
    Evident ca niciunul dintre membrii nu a lucrat in totalitate singur la taskurile pentru care era responsabil. Fiecare a intampinat diferite probleme pe care le-a rezolvat cu ajutorul altor membri, fie ca era o eroare sau doar un sfat, o idee de implementare. Comunicarea reprezinta un lucru esential pentru dezvoltarea unui proiect reusit.
+
+
+	Assets:
+	https://assetstore.unity.com/packages/tools/particles-effects/lowpoly-water-107563
+	https://assetstore.unity.com/packages/vfx/shaders/free-skybox-extended-shader-107400
+	https://assetstore.unity.com/packages/3d/animations/rpg-character-mecanim-animation-pack-free-65284
+	https://assetstore.unity.com/packages/3d/props/food/free-casual-food-pack-mobile-vr-85884
+	https://assetstore.unity.com/packages/3d/environments/roadways/grass-road-race-46974
+	https://assetstore.unity.com/packages/templates/tutorials/endless-runner-assets-144576
+	https://assetstore.unity.com/packages/3d/stylized-ship-unlit-and-pbr-94568
